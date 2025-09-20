@@ -7,7 +7,7 @@ import { Loader2, ShieldAlert, Check, X } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { collection, onSnapshot, orderBy, query, where, type Timestamp } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query, type Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -68,8 +68,9 @@ export default function AdminWithdrawalsPage() {
                 title: 'Solicitud Procesada',
                 description: `La solicitud de retiro ha sido ${action === 'approve' ? 'aprobada' : 'rechazada'}.`
             });
-        } catch(e: any) {
-            toast({ variant: 'destructive', title: 'Error', description: e.message });
+        } catch(e: unknown) {
+            const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred.';
+            toast({ variant: 'destructive', title: 'Error', description: errorMessage });
         } finally {
             setProcessingId(null);
         }

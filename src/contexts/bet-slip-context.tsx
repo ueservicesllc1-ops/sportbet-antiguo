@@ -4,12 +4,14 @@
 import { createContext, useContext, useState, ReactNode, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
+// The Bet type now includes an optional 'type' to distinguish between 'back' and 'lay' bets.
 export interface Bet {
-  id: string; // Composite ID, e.g., eventId_marketKey_selectionName
+  id: string; 
   event: string;
-  market: string; // e.g., h2h, totals, etc.
+  market: string;
   selection: string;
   odd: number;
+  type?: 'back' | 'lay'; // Optional 'back' or 'lay' type
 }
 
 interface BetSlipContextType {
@@ -27,13 +29,10 @@ export function BetSlipProvider({ children }: { children: ReactNode }) {
   const previousBetsRef = useRef<Bet[]>([]);
 
   useEffect(() => {
-    // This effect runs after the 'bets' state has been updated and the component has re-rendered.
-    // We compare the current bets with the previous state to determine what action was taken.
     const newBets = bets;
     const oldBets = previousBetsRef.current;
 
     if (newBets.length > oldBets.length) {
-      // A bet was added
       const addedBet = newBets.find(nb => !oldBets.some(ob => ob.id === nb.id));
       if (addedBet) {
         toast({
@@ -42,7 +41,6 @@ export function BetSlipProvider({ children }: { children: ReactNode }) {
         });
       }
     } else if (newBets.length < oldBets.length) {
-      // A bet was removed
       const removedBet = oldBets.find(ob => !newBets.some(nb => nb.id === ob.id));
        if (removedBet) {
         toast({
@@ -51,49 +49,34 @@ export function BetSlipProvider({ children }: { children: ReactNode }) {
             description: `${removedBet.selection}`,
         });
       }
-    } else if (newBets.length === oldBets.length && newBets.length > 0) {
-        // A bet might have been updated (replaced)
-        // This is a bit more complex, we can check if an ID was replaced with another for the same market
-        const updatedBet = newBets.find(nb => {
-            const oldVersion = oldBets.find(ob => ob.id === nb.id);
-            return !oldVersion; // The new bet didn't exist before with this ID
-        });
-         if (updatedBet) {
-            toast({
-                title: 'Apuesta actualizada',
-                description: `${updatedBet.selection} @ ${updatedBet.odd.toFixed(2)}`,
-            });
-        }
     }
 
-    // Update the ref to the current state for the next render.
     previousBetsRef.current = bets;
   }, [bets, toast]);
 
 
   const addBet = (newBet: Bet) => {
     setBets((prevBets) => {
-      const existingBetForMarketIndex = prevBets.findIndex(
-        (bet) => bet.event === newBet.event && bet.market === newBet.market
-      );
+      // Check if a bet with the same ID already exists
+      const existingBetIndex = prevBets.findIndex((bet) => bet.id === newBet.id);
 
-      let updatedBets;
-
-      if (existingBetForMarketIndex !== -1) {
-        const existingBet = prevBets[existingBetForMarketIndex];
-        if (existingBet.selection === newBet.selection) {
-          // Deselect: remove the bet
-          updatedBets = prevBets.filter((bet) => bet.id !== existingBet.id);
-        } else {
-          // Replace: remove old one, add new one
-          updatedBets = prevBets.filter((bet) => bet.id !== existingBet.id);
-          updatedBets.push(newBet);
-        }
+      if (existingBetIndex !== -1) {
+        // If it exists, remove it (deselect)
+        return prevBets.filter((bet) => bet.id !== newBet.id);
       } else {
-        // Add new bet
-        updatedBets = [...prevBets, newBet];
+        // If a bet for the same market but different selection exists, replace it.
+        const sameMarketIndex = prevBets.findIndex(
+          (bet) => bet.event === newBet.event && bet.market === newBet.market
+        );
+        if (sameMarketIndex !== -1) {
+            const updatedBets = prevBets.filter((_, index) => index !== sameMarketIndex);
+            updatedBets.push(newBet);
+            return updatedBets;
+        } else {
+            // Otherwise, just add the new bet.
+            return [...prevBets, newBet];
+        }
       }
-      return updatedBets;
     });
   };
 

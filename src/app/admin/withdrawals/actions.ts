@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { addDoc, collection, doc, getDoc, increment, runTransaction, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, increment, runTransaction, serverTimestamp } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
 const WELCOME_BONUS = 100;
@@ -40,9 +40,12 @@ export async function requestWithdrawal(userId: string, amount: number) {
         
         return { success: true };
 
-    } catch(e: any) {
+    } catch(e: unknown) {
         console.error("Error requesting withdrawal:", e);
-        throw e;
+        if (e instanceof Error) {
+            throw e;
+        }
+        throw new Error('An unexpected error occurred while requesting withdrawal.');
     }
 }
 
@@ -52,8 +55,6 @@ export async function processWithdrawal(requestId: string, action: 'approve' | '
         throw new Error('ID de solicitud y acción son requeridos.');
     }
     
-    // This should also be protected by checking the caller's role (isSuperAdmin)
-    // and with Firestore security rules.
     const requestDocRef = doc(db, 'withdrawals', requestId);
 
     try {
@@ -72,7 +73,6 @@ export async function processWithdrawal(requestId: string, action: 'approve' | '
                 processedAt: serverTimestamp(),
             });
 
-            // If approved, deduct the amount from the user's balance
             if (action === 'approve') {
                 const userDocRef = doc(db, 'users', userId);
                 transaction.update(userDocRef, {
@@ -94,7 +94,7 @@ export async function processWithdrawal(requestId: string, action: 'approve' | '
 }
 
 
-export async function submitDepositNotification(prevState: any, formData: FormData): Promise<{ success: boolean; message: string; }> {
+export async function submitDepositNotification(prevState: unknown, formData: FormData): Promise<{ success: boolean; message: string; }> {
     const userId = formData.get('userId') as string;
     const userEmail = formData.get('userEmail') as string;
     const amount = parseFloat(formData.get('amount') as string);

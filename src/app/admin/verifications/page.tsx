@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Loader2, ShieldAlert, Check, X, User, Hash, FileImage } from "lucide-react";
+import { Loader2, ShieldAlert, Check, X, FileImage } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -16,11 +16,9 @@ import { useToast } from "@/hooks/use-toast";
 import type { UserProfile, VerificationStatus } from "@/contexts/auth-context";
 import { processVerification } from "./actions";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Alert, AlertTitle, AlertDescription as AlertDescriptionComponent } from "@/components/ui/alert";
-
 
 interface VerificationRequest extends UserProfile {
-    requestedAt?: Timestamp; // Assuming we might add this field later
+    requestedAt?: Timestamp;
 }
 
 function StatusBadge({ status }: { status: VerificationStatus }) {
@@ -34,7 +32,6 @@ export default function AdminVerificationsPage() {
     const [requests, setRequests] = useState<VerificationRequest[]>([]);
     const [loading, setLoading] = useState(true);
     const [processingId, setProcessingId] = useState<string | null>(null);
-    const [imageError, setImageError] = useState(false);
     const { toast } = useToast();
     const { isAdmin, loading: authLoading } = useAuth();
     const router = useRouter();
@@ -52,7 +49,6 @@ export default function AdminVerificationsPage() {
             const reqs: VerificationRequest[] = [];
             snapshot.forEach(doc => {
                 const data = doc.data() as UserProfile;
-                 // Only show users who have submitted something
                 if(data.verificationStatus !== 'unverified' && data.realName) {
                     reqs.push(data as VerificationRequest);
                 }
@@ -72,8 +68,9 @@ export default function AdminVerificationsPage() {
                 title: 'Solicitud Procesada',
                 description: `La verificación ha sido ${action === 'approve' ? 'aprobada' : 'rechazada'}.`
             });
-        } catch(e: any) {
-            toast({ variant: 'destructive', title: 'Error', description: e.message });
+        } catch(e: unknown) {
+            const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred.';
+            toast({ variant: 'destructive', title: 'Error', description: errorMessage });
         } finally {
             setProcessingId(null);
         }
@@ -104,7 +101,7 @@ export default function AdminVerificationsPage() {
     const processedRequests = requests.filter(r => r.verificationStatus !== 'pending');
 
     return (
-        <Dialog onOpenChange={() => setImageError(false)}>
+        <Dialog>
             <div className="space-y-6">
                 <h1 className="text-3xl font-bold tracking-tight">Verificaciones de Identidad (KYC)</h1>
 

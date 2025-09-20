@@ -1,0 +1,339 @@
+{
+    "success": 1,
+    "results": [
+        {
+            "id": "573510",
+            "sport_id": "1",
+            "time": "1517108760",
+            "time_status": "3",
+            "league": {
+                "id": "3277",
+                "name": "Mexico Clausura",
+                "cc": "mx"
+            },
+            "home": {
+                "id": "7430",
+                "name": "Chivas Guadalajara",
+                "image_id": "1938",
+                "cc": "mx"
+            },
+            "away": {
+                "id": "42032",
+                "name": "Monterrey",
+                "image_id": "1932",
+                "cc": "mx"
+            },
+            "ss": "1-2",
+            "scores": {
+                "2": {
+                    "home": "1",
+                    "away": "2"
+                },
+                "1": {
+                    "home": "0",
+                    "away": "1"
+                }
+            },
+            "stats": {
+                "attacks": [
+                    "93",
+                    "75"
+                ],
+                "ball_safe": [
+                    "108",
+                    "76"
+                ],
+                "corners": [
+                    "5",
+                    "5"
+                ],
+                "corner_f": [
+                    "5",
+                    "5"
+                ],
+                "corner_h": [
+                    "2",
+                    "4"
+                ],
+                "dangerous_attacks": [
+                    "84",
+                    "72"
+                ],
+                "fouls": [
+                    "8",
+                    "16"
+                ],
+                "goalattempts": [
+                    "14",
+                    "10"
+                ],
+                "goals": [
+                    "1",
+                    "2"
+                ],
+                "injuries": [
+                    "2",
+                    "1"
+                ],
+                "offsides": [
+                    "1",
+                    "0"
+                ],
+                "off_target": [
+                    "9",
+                    "4"
+                ],
+                "on_target": [
+                    "6",
+                    "8"
+                ],
+                "penalties": [
+                    "0",
+                    "0"
+                ],
+                "possession_rt": [
+                    "47",
+                    "53"
+                ],
+                "redcards": [
+                    "0",
+                    "0"
+                ],
+                "saves": [
+                    "6",
+                    "4"
+                ],
+                "shots_blocked": [
+                    "1",
+                    "2"
+                ],
+                "substitutions": [
+                    "8",
+                    "6"
+                ],
+                "yellowcards": [
+                    "1",
+                    "5"
+                ]
+            },
+            "events": [
+                {
+                    "id": "40580181",
+                    "text": "10' - 1st Corner - Monterrey"
+                },
+                {
+                    "id": "40580192",
+                    "text": "0:1 Corners 00:00 - 09:59"
+                },
+                {
+                    "id": "40580193",
+                    "text": "0:0 Goals 00:00 - 09:59"
+                },
+                {
+                    "id": "40580201",
+                    "text": "11' - 2nd Corner - Chivas Guadalajara"
+                },
+                {
+                    "id": "40580244",
+                    "text": "14' - 3rd Corner - Chivas Guadalajara"
+                },
+                {
+                    "id": "40580312",
+                    "text": "18' - 4th Corner - Monterrey"
+                },
+                {
+                    "id": "40580350",
+                    "text": "2:1 Corners 10:00 - 19:59"
+                },
+                {
+                    "id": "40580351",
+                    "text": "0:0 Goals 10:00 - 19:59"
+                },
+                {
+                    "id": "40580399",
+                    "text": "23' - 5th Corner - Monterrey"
+                },
+                {
+                    "id": "40580400",
+                    "text": "23' - Race to 3 Corners - Monterrey"
+                },
+                {
+                    "id": "40580535",
+                    "text": "30' - 6th Corner - Monterrey"
+                },
+                {
+                    "id": "40580555",
+                    "text": "0:2 Corners 20:00 - 29:59"
+                },
+                {
+                    "id": "40580556",
+                    "text": "0:0 Goals 20:00 - 29:59"
+                },
+                {
+                    "id": "40580718",
+                    "text": "0:0 Corners 30:00 - 39:59"
+                },
+                {
+                    "id": "40580719",
+                    "text": "0:0 Goals 30:00 - 39:59"
+                },
+                {
+                    "id": "40580742",
+                    "text": "42' - 1st Goal - Gonzalez  (Monterrey) - Shot"
+                },
+                {
+                    "id": "40580802",
+                    "text": "45+1' - 1st Yellow Card - Marin (Chivas Guadalajara)"
+                },
+                {
+                    "id": "40580842",
+                    "text": "0-1: First Half Score"
+                },
+                {
+                    "id": "40581100",
+                    "text": "46' - Substitution - Brizuela for Hernandez (Chivas Guadalajara)"
+                },
+                {
+                    "id": "40581119",
+                    "text": "47' - 2nd Goal - Pulido  (Chivas Guadalajara) - Shot"
+                },
+                {
+                    "id": "40581120",
+                    "text": "46' - Substitution - Pulido for Pineda (Chivas Guadalajara)"
+                },
+                {
+                    "id": "40581148",
+                    "text": "0:0 Corners 40:00 - 49:59"
+                },
+                {
+                    "id": "40581149",
+                    "text": "1:1 Goals 40:00 - 49:59"
+                },
+                {
+                    "id": "40581174",
+                    "text": "50' - 3rd Goal - Hurtado  (Monterrey) - Shot"
+                },
+                {
+                    "id": "40581183",
+                    "text": "51' - 2nd Yellow Card - Sanchez (Monterrey)"
+                },
+                {
+                    "id": "40581267",
+                    "text": "56' - 3rd Yellow Card -  (Monterrey)"
+                },
+                {
+                    "id": "40581275",
+                    "text": "57' - 7th Corner - Monterrey"
+                },
+                {
+                    "id": "40581276",
+                    "text": "57' - Race to 5 Corners - Monterrey"
+                },
+                {
+                    "id": "40581303",
+                    "text": "0:1 Corners 50:00 - 59:59"
+                },
+                {
+                    "id": "40581304",
+                    "text": "0:0 Goals 50:00 - 59:59"
+                },
+                {
+                    "id": "40581319",
+                    "text": "59' - Substitution - Urreta for Gonzalez (Monterrey)"
+                },
+                {
+                    "id": "40581382",
+                    "text": "63' - Substitution - Sandoval for Sanchez (Chivas Guadalajara)"
+                },
+                {
+                    "id": "40581418",
+                    "text": "0:0 Corners 60:00 - 69:59"
+                },
+                {
+                    "id": "40581419",
+                    "text": "0:0 Goals 60:00 - 69:59"
+                },
+                {
+                    "id": "40581428",
+                    "text": "69' - 8th Corner - Chivas Guadalajara"
+                },
+                {
+                    "id": "40581481",
+                    "text": "73' - 4th Yellow Card - Hurtado (Monterrey)"
+                },
+                {
+                    "id": "40581515",
+                    "text": "74' - Substitution - Molina for Pabon (Monterrey)"
+                },
+                {
+                    "id": "40581528",
+                    "text": "75' - 5th Yellow Card - Ortiz (Monterrey)"
+                },
+                {
+                    "id": "40581585",
+                    "text": "0:0 Corners 70:00 - 79:59"
+                },
+                {
+                    "id": "40581586",
+                    "text": "0:0 Goals 70:00 - 79:59"
+                },
+                {
+                    "id": "40581599",
+                    "text": "80' - 9th Corner - Chivas Guadalajara"
+                },
+                {
+                    "id": "40581627",
+                    "text": "81' - Substitution - Sanchez for Hurtado (Monterrey)"
+                },
+                {
+                    "id": "40581685",
+                    "text": "86' - 10th Corner - Chivas Guadalajara"
+                },
+                {
+                    "id": "40581787",
+                    "text": "90+4' - 6th Yellow Card - Sanchez (Monterrey)"
+                },
+                {
+                    "id": "40581807",
+                    "text": "1-2: Full Time Score"
+                }
+            ],
+            "extra": {
+                "away_manager": {
+                    "id": "105786",
+                    "name": "Antonio Mohamed",
+                    "cc": "ar"
+                },
+                "home_manager": {
+                    "id": "22175",
+                    "name": "Matias Jesus Almeyda",
+                    "cc": "ar"
+                },
+                "length": "90",
+                "home_pos": "14",
+                "away_pos": "8",
+                "referee": {
+                    "id": "313242",
+                    "name": "Cesar Arturo Ramos",
+                    "cc": "mx"
+                },
+                "pitch": "Good",
+                "stadium": "Estadio Akron",
+                "weather": "Good",
+                "stadium_data": {
+                    "id": "2401",
+                    "name": "Estadio Akron",
+                    "city": "Guadalajara",
+                    "country": "Mexico",
+                    "capacity": "45364",
+                    "googlecoords": "20.681667,-103.462776"
+                },
+                "round": "4"
+            },
+            "has_lineup": 1,
+            "inplay_created_at": "1517107834",
+            "inplay_updated_at": "1517115733",
+            "confirmed_at": "1517121966"
+        }
+    ]
+}

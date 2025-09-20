@@ -2,189 +2,103 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getSportsOdds } from '@/lib/odds-api';
+import { getUpcomingEvents, BetfairEvent } from '@/lib/betsapi';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Loader2, Star } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
-import { Button } from './ui/button';
-import { useBetSlip } from '@/contexts/bet-slip-context';
-import type { Bet } from '@/contexts/bet-slip-context';
-import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import Link from 'next/link';
 
-interface Bookmaker {
-  key: string;
-  title: string;
-  markets: {
-    key: string;
-    outcomes: {
-      name: string;
-      price: number;
-    }[];
-  }[];
-}
-
-interface ApiMatchEvent {
-  id: string;
-  home_team: string;
-  away_team: string;
-  commence_time: string;
-  bookmakers: Bookmaker[];
-}
+const FEATURED_SPORT_ID = '1'; // Soccer
 
 export function FeaturedMatches() {
-  const [events, setEvents] = useState<ApiMatchEvent[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+    const [events, setEvents] = useState<BetfairEvent[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchFeatured() {
-      try {
-        // Fetch from a popular league, e.g., Copa Sudamericana
-        const odds = await getSportsOdds('soccer_copa_sudamericana');
-        // Get the first 5 events as featured
-        setEvents(odds.slice(0, 5));
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
-        setError(errorMessage);
-        console.error('Failed to fetch featured matches:', err);
-      } finally {
-        setLoading(false);
-      }
+    useEffect(() => {
+        async function fetchFeaturedEvents() {
+            try {
+                setLoading(true);
+                const upcomingEvents = await getUpcomingEvents(FEATURED_SPORT_ID);
+                // Take the first 10 upcoming events as featured
+                setEvents(upcomingEvents.slice(0, 10));
+            } catch (err) {
+                const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+                console.error('Failed to fetch featured events:', errorMessage);
+                setError(errorMessage);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchFeaturedEvents();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex h-40 items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        );
     }
-    fetchFeatured();
-  }, []);
 
-  if (loading) {
+    if (error) {
+        return (
+            <Alert variant="destructive">
+                <AlertTitle>Error al Cargar Partidos Destacados</AlertTitle>
+                <AlertDescription className="text-xs">{error}</AlertDescription>
+            </Alert>
+        );
+    }
+
+    if (events.length === 0) {
+        return null; // Don't render the component if there are no events
+    }
+
     return (
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                    <Star className="h-5 w-5 text-primary" />
-                    <span>Partidos Destacados</span>
+                    <Star className="h-5 w-5 text-yellow-400" />
+                    Partidos Destacados
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="flex justify-center items-center h-24">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                </div>
+                <Carousel opts={{ align: "start", loop: true }}>
+                    <CarouselContent>
+                        {events.map((event) => (
+                            <CarouselItem key={event.id} className="md:basis-1/2 lg:basis-1/3">
+                                <FeaturedMatchCard event={event} />
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="-left-2" />
+                    <CarouselNext className="-right-2" />
+                </Carousel>
             </CardContent>
         </Card>
     );
-  }
-
-  if (error) {
-     return (
-        <Card>
-             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Star className="h-5 w-5 text-primary" />
-                    <span>Partidos Destacados</span>
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <Alert variant="destructive">
-                    <AlertTitle>Error al cargar partidos</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
-                </Alert>
-            </CardContent>
-        </Card>
-     )
-  }
-
-  if (events.length === 0) {
-    return null; // Don't render the component if there are no events
-  }
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Star className="h-5 w-5 text-primary" />
-          <span>Partidos Destacados</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-2">
-            {events.map((event) => (
-              <CarouselItem key={event.id} className="pl-2 md:basis-1/2 lg:basis-1/3">
-                <div className="p-1">
-                  <FeaturedMatchCard event={event} />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className='-left-4' />
-          <CarouselNext className='-right-4' />
-        </Carousel>
-      </CardContent>
-    </Card>
-  );
 }
 
-function FeaturedMatchCard({ event }: { event: ApiMatchEvent }) {
-    const { addBet, bets } = useBetSlip();
-
-    const bookmaker = event.bookmakers?.find(b => b.markets.some(m => m.key === 'h2h'));
-    const h2hMarket = bookmaker?.markets.find(m => m.key === 'h2h');
-
-    const getOdd = (teamName: string) => h2hMarket?.outcomes.find(o => o.name === teamName)?.price || 0;
-    const getDrawOdd = () => h2hMarket?.outcomes.find(o => o.name === 'Draw')?.price || 0;
-
-    const homeOdd = getOdd(event.home_team);
-    const awayOdd = getOdd(event.away_team);
-    const drawOdd = getDrawOdd();
-
-    const handleAddBet = (market: '1' | 'X' | '2', selection: string, odd: number) => {
-        if (odd === 0) return;
-        const bet: Bet = {
-            id: `${event.id}_h2h`,
-            event: `${event.home_team} vs ${event.away_team}`,
-            market: 'h2h',
-            selection: selection,
-            odd,
-        };
-        addBet(bet);
-    };
-
-    const getButtonVariant = (selectionName: string) => {
-      const betId = `${event.id}_h2h`;
-      return bets.some(b => b.id === betId && b.selection === selectionName) ? 'secondary' : 'outline';
-    }
-
-    const eventDate = new Date(event.commence_time);
+function FeaturedMatchCard({ event }: { event: BetfairEvent }) {
+    const eventDate = new Date(parseInt(event.time) * 1000);
+    const formattedTime = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const formattedDate = eventDate.toLocaleDateString([], { day: '2-digit', month: 'short' });
 
     return (
-        <div className="rounded-lg border bg-card text-card-foreground p-3 space-y-3">
-            <div className="text-center text-xs text-muted-foreground">
-                {eventDate.toLocaleDateString([], { month: 'short', day: 'numeric' })} - {eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        <Link href={`/match/${event.id}`} className="block p-1">
+            <div className="rounded-lg border bg-card p-4 transition-all hover:bg-muted/50">
+                <p className="text-xs text-muted-foreground">{event.league.name}</p>
+                <div className="my-3 space-y-2 text-center">
+                    <p className="font-bold">{event.home.name}</p>
+                    <p className="text-sm font-semibold text-primary">VS</p>
+                    <p className="font-bold">{event.away.name}</p>
+                </div>
+                <div className="text-center text-xs text-muted-foreground">
+                    <span>{formattedDate} - {formattedTime}</span>
+                </div>
             </div>
-            <div className='flex flex-col items-center justify-center text-sm font-medium text-center space-y-1'>
-                <span>{event.home_team}</span>
-                <span className='text-xs text-muted-foreground'>vs</span>
-                <span>{event.away_team}</span>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-                <Button variant={getButtonVariant(event.home_team)} size="sm" className="flex-col h-auto py-1" onClick={() => handleAddBet('1', event.home_team, homeOdd)} disabled={homeOdd === 0}>
-                    <span className='text-xs font-normal'>1</span>
-                    <span className="font-bold">{homeOdd.toFixed(2)}</span>
-                </Button>
-                <Button variant={getButtonVariant('Empate')} size="sm" className="flex-col h-auto py-1" onClick={() => handleAddBet('X', 'Empate', drawOdd)} disabled={drawOdd === 0}>
-                    <span className='text-xs font-normal'>X</span>
-                    <span className="font-bold">{drawOdd.toFixed(2)}</span>
-                </Button>
-                <Button variant={getButtonVariant(event.away_team)} size="sm" className="flex-col h-auto py-1" onClick={() => handleAddBet('2', event.away_team, awayOdd)} disabled={awayOdd === 0}>
-                    <span className='text-xs font-normal'>2</span>
-                    <span className="font-bold">{awayOdd.toFixed(2)}</span>
-                </Button>
-            </div>
-        </div>
-    )
+        </Link>
+    );
 }

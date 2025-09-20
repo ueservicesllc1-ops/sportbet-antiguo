@@ -1,0 +1,38 @@
+{
+    "success": 1,
+    "results": [
+        {
+            "id": "222577",
+            "time": "1489672775",
+            "time_status": "1",
+            "league": {
+                "id": "363",
+                "name": "Europe Friendlies",
+                "cc": "eu"
+            },
+            "home": {
+                "id": "9844",
+                "name": "Aalesund",
+                "image_id": "677",
+                "cc": "no"
+            },
+            "away": {
+                "id": "1154",
+                "name": "Odd BK",
+                "image_id": "659",
+                "cc": "no"
+            },
+            "timer": {
+                "tm": 45,
+                "ts": 0,
+                "tt": "0"
+            },
+            "scores": {
+                "2": {
+                    "home": "0",
+                    "away": "2"
+                }
+            }
+        }
+    ]
+}

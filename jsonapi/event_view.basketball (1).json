@@ -1,0 +1,82 @@
+{
+    "success": 1,
+    "results": [
+        {
+            "id": "465657",
+            "sport_id": "18",
+            "time": "1507017600",
+            "time_status": "1",
+            "league": {
+                "id": "339",
+                "name": "Philippines NCAA",
+                "cc": "ph"
+            },
+            "home": {
+                "id": "2303",
+                "name": "CSB Blazers",
+                "image_id": "268131",
+                "cc": "ph"
+            },
+            "away": {
+                "id": "2234",
+                "name": "JRU Heavy Bombers",
+                "image_id": "268103",
+                "cc": "ph"
+            },
+            "ss": "35-51",
+            "timer": {
+                "tm": "10",
+                "ts": "0",
+                "q": "3"
+            },
+            "scores": {
+                "1": {
+                    "home": "20",
+                    "away": "21"
+                },
+                "2": {
+                    "home": "15",
+                    "away": "30"
+                },
+                "3": {
+                    "home": "35",
+                    "away": "51"
+                },
+                "4": {
+                    "home": "0",
+                    "away": "0"
+                },
+                "7": {
+                    "home": "35",
+                    "away": "51"
+                }
+            },
+            "stats": {
+                "3points": [
+                    "3",
+                    "6"
+                ],
+                "2points": [
+                    "11",
+                    "14"
+                ],
+                "free_throws": [
+                    "4",
+                    "5"
+                ],
+                "time_outs": [
+                    "0",
+                    "2"
+                ],
+                "fouls": [
+                    "0",
+                    "0"
+                ],
+                "free_throws_rate": [
+                    "80",
+                    "62.5"
+                ]
+            }
+        }
+    ]
+}

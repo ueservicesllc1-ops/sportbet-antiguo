@@ -1,0 +1,511 @@
+{
+    "success": 1,
+    "results": {
+        "player": {
+            "id": "750",
+            "name": "Cristiano Ronaldo",
+            "cc": "pt",
+            "birthdate": "1985-02-05",
+            "position": "Forward",
+            "height": "185",
+            "weight": "80",
+            "foot": "Both"
+        },
+        "transfers": [
+            {
+                "start": "0",
+                "end": "0",
+                "type_id": "1",
+                "active": "1",
+                "team": {
+                    "id": "4509",
+                    "name": "Portugal",
+                    "image_id": "4704",
+                    "cc": "pt"
+                }
+            },
+            {
+                "start": "962409600",
+                "end": "1025395200",
+                "type_id": "1",
+                "active": "0",
+                "team": {
+                    "id": "6163",
+                    "name": "Sporting U19",
+                    "image_id": "78151",
+                    "cc": "pt"
+                }
+            },
+            {
+                "start": "1025481600",
+                "end": "1060560000",
+                "type_id": "1",
+                "active": "0",
+                "team": {
+                    "id": "1046",
+                    "name": "Sporting",
+                    "image_id": "3001",
+                    "cc": "pt"
+                }
+            },
+            {
+                "start": "1060646400",
+                "end": "1246320000",
+                "type_id": "1",
+                "active": "0",
+                "team": {
+                    "id": "10899",
+                    "name": "Man Utd",
+                    "image_id": "35",
+                    "cc": "gb"
+                }
+            },
+            {
+                "start": "1246406400",
+                "end": "1531094400",
+                "type_id": "1",
+                "active": "0",
+                "team": {
+                    "id": "17163",
+                    "name": "Real Madrid",
+                    "image_id": "2829",
+                    "cc": "es"
+                }
+            },
+            {
+                "start": "1531180800",
+                "end": "0",
+                "type_id": "1",
+                "active": "1",
+                "team": {
+                    "id": "22228",
+                    "name": "Juventus",
+                    "image_id": "2687",
+                    "cc": "it"
+                }
+            }
+        ],
+        "events": [
+            {
+                "team_uid": "2687",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "0",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "6",
+                "shots_on_goal": "2",
+                "blocked_shots": "2",
+                "corner": "0",
+                "offside": "0",
+                "updated_at": "1535763017",
+                "event": {
+                    "id": "849303",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "199",
+                        "name": "Italy Serie A",
+                        "cc": "it"
+                    },
+                    "home": {
+                        "id": "22228",
+                        "name": "Juventus",
+                        "image_id": "2687",
+                        "cc": "it"
+                    },
+                    "away": {
+                        "id": "43865",
+                        "name": "Lazio",
+                        "image_id": "2699",
+                        "cc": "it"
+                    },
+                    "time": "1535212800",
+                    "ss": "2-0",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "2687",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "0",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "7",
+                "shots_on_goal": "4",
+                "blocked_shots": "1",
+                "corner": "0",
+                "offside": "0",
+                "updated_at": "1535763017",
+                "event": {
+                    "id": "851520",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "199",
+                        "name": "Italy Serie A",
+                        "cc": "it"
+                    },
+                    "home": {
+                        "id": "1281",
+                        "name": "Chievo",
+                        "image_id": "2694",
+                        "cc": "it"
+                    },
+                    "away": {
+                        "id": "22228",
+                        "name": "Juventus",
+                        "image_id": "2687",
+                        "cc": "it"
+                    },
+                    "time": "1534608000",
+                    "ss": "2-3",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "4704",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "0",
+                "assists": "0",
+                "yellowcard": "90",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "6",
+                "shots_on_goal": "1",
+                "blocked_shots": "4",
+                "corner": "0",
+                "offside": "0",
+                "updated_at": "1535762999",
+                "event": {
+                    "id": "804472",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "8538",
+                        "name": "World Cup 2018",
+                        "cc": null
+                    },
+                    "home": {
+                        "id": "4600",
+                        "name": "Uruguay",
+                        "image_id": "4725",
+                        "cc": "uy"
+                    },
+                    "away": {
+                        "id": "4509",
+                        "name": "Portugal",
+                        "image_id": "4704",
+                        "cc": "pt"
+                    },
+                    "time": "1530381600",
+                    "ss": "2-1",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "4704",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "0",
+                "assists": "0",
+                "yellowcard": "83",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "4",
+                "shots_on_goal": "2",
+                "blocked_shots": "1",
+                "corner": "0",
+                "offside": "0",
+                "updated_at": "1535762999",
+                "event": {
+                    "id": "603284",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "8538",
+                        "name": "World Cup 2018",
+                        "cc": null
+                    },
+                    "home": {
+                        "id": "4396",
+                        "name": "Iran",
+                        "image_id": "4766",
+                        "cc": "ir"
+                    },
+                    "away": {
+                        "id": "4509",
+                        "name": "Portugal",
+                        "image_id": "4704",
+                        "cc": "pt"
+                    },
+                    "time": "1529949600",
+                    "ss": "1-1",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "4704",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "1",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "6",
+                "shots_on_goal": "1",
+                "blocked_shots": "3",
+                "corner": "0",
+                "offside": "1",
+                "updated_at": "1535762999",
+                "event": {
+                    "id": "603267",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "8538",
+                        "name": "World Cup 2018",
+                        "cc": null
+                    },
+                    "home": {
+                        "id": "4509",
+                        "name": "Portugal",
+                        "image_id": "4704",
+                        "cc": "pt"
+                    },
+                    "away": {
+                        "id": "3899",
+                        "name": "Morocco",
+                        "image_id": "4778",
+                        "cc": "ma"
+                    },
+                    "time": "1529496000",
+                    "ss": "1-0",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "4704",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "3",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "4",
+                "shots_on_goal": "3",
+                "blocked_shots": "1",
+                "corner": "0",
+                "offside": "0",
+                "updated_at": "1535762999",
+                "event": {
+                    "id": "603250",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "8538",
+                        "name": "World Cup 2018",
+                        "cc": null
+                    },
+                    "home": {
+                        "id": "4509",
+                        "name": "Portugal",
+                        "image_id": "4704",
+                        "cc": "pt"
+                    },
+                    "away": {
+                        "id": "4504",
+                        "name": "Spain",
+                        "image_id": "4698",
+                        "cc": "es"
+                    },
+                    "time": "1529085600",
+                    "ss": "3-3",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "2829",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "0",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "3",
+                "shots_on_goal": "1",
+                "blocked_shots": "1",
+                "corner": "0",
+                "offside": "2",
+                "updated_at": "1527742038",
+                "event": {
+                    "id": "742493",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "1040",
+                        "name": "UEFA Champions League",
+                        "cc": "eu"
+                    },
+                    "home": {
+                        "id": "17163",
+                        "name": "Real Madrid",
+                        "image_id": "2829",
+                        "cc": "es"
+                    },
+                    "away": {
+                        "id": "23451",
+                        "name": "Liverpool",
+                        "image_id": "44",
+                        "cc": "gb"
+                    },
+                    "time": "1527360300",
+                    "ss": "3-1",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "2829",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "1",
+                "minutesplayed": "62",
+                "goals": "1",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "4",
+                "shots_on_goal": "2",
+                "blocked_shots": "0",
+                "corner": "0",
+                "offside": "1",
+                "updated_at": "1530563011",
+                "event": {
+                    "id": "755291",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "207",
+                        "name": "Spain Primera Liga",
+                        "cc": "es"
+                    },
+                    "home": {
+                        "id": "1374",
+                        "name": "Villarreal",
+                        "image_id": "2819",
+                        "cc": "es"
+                    },
+                    "away": {
+                        "id": "17163",
+                        "name": "Real Madrid",
+                        "image_id": "2829",
+                        "cc": "es"
+                    },
+                    "time": "1526755500",
+                    "ss": "2-2",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "2829",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "1",
+                "minutesplayed": "45",
+                "goals": "1",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "8",
+                "shots_on_goal": "3",
+                "blocked_shots": "1",
+                "corner": "0",
+                "offside": "1",
+                "updated_at": "1530563011",
+                "event": {
+                    "id": "735611",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "207",
+                        "name": "Spain Primera Liga",
+                        "cc": "es"
+                    },
+                    "home": {
+                        "id": "1211",
+                        "name": "Barcelona",
+                        "image_id": "2817",
+                        "cc": "es"
+                    },
+                    "away": {
+                        "id": "17163",
+                        "name": "Real Madrid",
+                        "image_id": "2829",
+                        "cc": "es"
+                    },
+                    "time": "1525632300",
+                    "ss": "2-2",
+                    "time_status": "3"
+                }
+            },
+            {
+                "team_uid": "2829",
+                "starting": "1",
+                "substitutedIn": "0",
+                "substitutedOut": "0",
+                "minutesplayed": "90",
+                "goals": "0",
+                "assists": "0",
+                "yellowcard": "",
+                "yellowredcard": "",
+                "redcard": "",
+                "shots": "5",
+                "shots_on_goal": "1",
+                "blocked_shots": "1",
+                "corner": "0",
+                "offside": "0",
+                "updated_at": "1527742038",
+                "event": {
+                    "id": "716039",
+                    "sport_id": "1",
+                    "league": {
+                        "id": "1040",
+                        "name": "UEFA Champions League",
+                        "cc": "eu"
+                    },
+                    "home": {
+                        "id": "17163",
+                        "name": "Real Madrid",
+                        "image_id": "2829",
+                        "cc": "es"
+                    },
+                    "away": {
+                        "id": "9943",
+                        "name": "Bayern Munich",
+                        "image_id": "2672",
+                        "cc": "de"
+                    },
+                    "time": "1525200300",
+                    "ss": "2-2",
+                    "time_status": "3"
+                }
+            }
+        ]
+    }
+}

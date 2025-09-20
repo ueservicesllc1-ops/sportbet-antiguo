@@ -1,0 +1,515 @@
+{
+    "success": 1,
+    "results": {
+        "h2h": [
+            {
+                "id": "199439",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "time": "1466924400",
+                "ss": "3-1",
+                "time_status": "3"
+            }
+        ],
+        "home": [
+            {
+                "id": "199690",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "11377",
+                    "name": "Changchun Yatai",
+                    "image_id": "34694",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1491721200",
+                "ss": "1-1",
+                "time_status": "3"
+            },
+            {
+                "id": "188727",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43805",
+                    "name": "Jiangsu Suning FC",
+                    "image_id": "34693",
+                    "cc": "cn"
+                },
+                "time": "1491118200",
+                "ss": "3-1",
+                "time_status": "3"
+            },
+            {
+                "id": "214049",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "11283",
+                    "name": "Henan Jianye",
+                    "image_id": "34692",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1489318500",
+                "ss": "1-1",
+                "time_status": "3"
+            },
+            {
+                "id": "183103",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "42",
+                    "name": "Guizhou Zhicheng",
+                    "image_id": "50017",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1488540900",
+                "ss": "1-1",
+                "time_status": "3"
+            },
+            {
+                "id": "166401",
+                "sport_id": "1",
+                "league": {
+                    "id": "375",
+                    "name": "World Club Friendlies",
+                    "cc": null
+                },
+                "home": {
+                    "id": "2423",
+                    "name": "Edgeworth Eagles",
+                    "image_id": "136222",
+                    "cc": "au"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1487143800",
+                "ss": "1-2",
+                "time_status": "3"
+            },
+            {
+                "id": "64630",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43805",
+                    "name": "Jiangsu Suning FC",
+                    "image_id": "34693",
+                    "cc": "cn"
+                },
+                "time": "1477827300",
+                "ss": "1-0",
+                "time_status": "3"
+            },
+            {
+                "id": "60164",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1477481700",
+                "ss": "1-1",
+                "time_status": "3"
+            },
+            {
+                "id": "61527",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1477481387",
+                "ss": "1-1",
+                "time_status": "3"
+            },
+            {
+                "id": "53286",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "11377",
+                    "name": "Changchun Yatai",
+                    "image_id": "34694",
+                    "cc": "cn"
+                },
+                "time": "1477207800",
+                "ss": "0-1",
+                "time_status": "3"
+            },
+            {
+                "id": "45834",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "9570",
+                    "name": "Chongqing Lifan",
+                    "image_id": "3362",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1476617700",
+                "ss": "2-1",
+                "time_status": "3"
+            }
+        ],
+        "away": [
+            {
+                "id": "183606",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "11289",
+                    "name": "Guangzhou Evergrande",
+                    "image_id": "24156",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "time": "1491651300",
+                "ss": "2-2",
+                "time_status": "3"
+            },
+            {
+                "id": "203209",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "9571",
+                    "name": "Yanbian Fude FC",
+                    "image_id": "41539",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "time": "1491031800",
+                "ss": "0-1",
+                "time_status": "3"
+            },
+            {
+                "id": "214048",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "11377",
+                    "name": "Changchun Yatai",
+                    "image_id": "34694",
+                    "cc": "cn"
+                },
+                "time": "1489303800",
+                "ss": "1-0",
+                "time_status": "3"
+            },
+            {
+                "id": "183104",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43810",
+                    "name": "Tianjin Quanjian",
+                    "image_id": "50018",
+                    "cc": "cn"
+                },
+                "time": "1488612600",
+                "ss": "2-0",
+                "time_status": "3"
+            },
+            {
+                "id": "166400",
+                "sport_id": "1",
+                "league": {
+                    "id": "375",
+                    "name": "World Club Friendlies",
+                    "cc": null
+                },
+                "home": {
+                    "id": "49",
+                    "name": "Brisbane Strikers",
+                    "image_id": "2936",
+                    "cc": "au"
+                },
+                "away": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "time": "1487152170",
+                "ss": "2-2",
+                "time_status": "3"
+            },
+            {
+                "id": "146734",
+                "sport_id": "1",
+                "league": {
+                    "id": "250",
+                    "name": "International Match",
+                    "cc": null
+                },
+                "home": {
+                    "id": "6914",
+                    "name": "Malawi",
+                    "image_id": "8043",
+                    "cc": null
+                },
+                "away": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "time": "1485603600",
+                "ss": "2-2",
+                "time_status": "3"
+            },
+            {
+                "id": "64882",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "49388",
+                    "name": "Shijiazhuang Ever Bright",
+                    "image_id": "66440",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "time": "1477827300",
+                "ss": "3-2",
+                "time_status": "3"
+            },
+            {
+                "id": "60164",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1477481700",
+                "ss": "1-1",
+                "time_status": "3"
+            },
+            {
+                "id": "61527",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "10121",
+                    "name": "Liaoning Hongyun",
+                    "image_id": "41429",
+                    "cc": "cn"
+                },
+                "time": "1477481387",
+                "ss": "1-1",
+                "time_status": "3"
+            },
+            {
+                "id": "53287",
+                "sport_id": "1",
+                "league": {
+                    "id": "849",
+                    "name": "China Super League",
+                    "cc": "cn"
+                },
+                "home": {
+                    "id": "9569",
+                    "name": "Beijing Guoan",
+                    "image_id": "3376",
+                    "cc": "cn"
+                },
+                "away": {
+                    "id": "43806",
+                    "name": "Guangzhou R&F",
+                    "image_id": "3375",
+                    "cc": "cn"
+                },
+                "time": "1477125000",
+                "ss": "3-1",
+                "time_status": "3"
+            }
+        ]
+    }
+}

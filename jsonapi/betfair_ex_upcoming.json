@@ -1,0 +1,314 @@
+{
+    "success": 1,
+    "pager": {
+        "page": 1,
+        "per_page": 50,
+        "total": 16
+    },
+    "results": [
+        {
+            "id": "28832501",
+            "sport_id": "4",
+            "time": "1533981600",
+            "time_status": "0",
+            "league": {
+                "id": "11365612",
+                "name": "Test Matches"
+            },
+            "home": {
+                "id": "22173",
+                "name": "England"
+            },
+            "away": {
+                "id": "23073",
+                "name": "India (2nd Test)"
+            },
+            "our_event_id": "861743"
+        },
+        {
+            "id": "28839521",
+            "sport_id": "4",
+            "time": "1533994200",
+            "time_status": "0",
+            "league": {
+                "id": "887470",
+                "name": "Womens Super League"
+            },
+            "home": {
+                "id": "47471",
+                "name": "Loughborough Lightning"
+            },
+            "away": {
+                "id": "47470",
+                "name": "Lancashire Thunder"
+            },
+            "our_event_id": "854047"
+        },
+        {
+            "id": "28839523",
+            "sport_id": "4",
+            "time": "1533994200",
+            "time_status": "0",
+            "league": {
+                "id": "887470",
+                "name": "Womens Super League"
+            },
+            "home": {
+                "id": "47468",
+                "name": "Western Storm"
+            },
+            "away": {
+                "id": "47467",
+                "name": "Southern Vipers"
+            },
+            "our_event_id": "854048"
+        },
+        {
+            "id": "28839530",
+            "sport_id": "4",
+            "time": "1534010400",
+            "time_status": "0",
+            "league": {
+                "id": "11893330",
+                "name": "T20 Blast"
+            },
+            "home": {
+                "id": "37316",
+                "name": "Derbyshire"
+            },
+            "away": {
+                "id": "37317",
+                "name": "Leicestershire"
+            },
+            "our_event_id": "783747"
+        },
+        {
+            "id": "28835463",
+            "sport_id": "4",
+            "time": "1534017600",
+            "time_status": "0",
+            "league": {
+                "id": "11416933",
+                "name": "Caribbean Premier League"
+            },
+            "home": {
+                "id": "48412",
+                "name": "Guyana Amazon Warriors"
+            },
+            "away": {
+                "id": "48411",
+                "name": "St Lucia Stars"
+            },
+            "our_event_id": "864890"
+        },
+        {
+            "id": "28840606",
+            "sport_id": "4",
+            "time": "1534032000",
+            "time_status": "0",
+            "league": {
+                "id": "11416933",
+                "name": "Caribbean Premier League"
+            },
+            "home": {
+                "id": "48410",
+                "name": "Trinbago Knight Riders"
+            },
+            "away": {
+                "id": "48413",
+                "name": "St Kitts and Nevis Patrio"
+            },
+            "our_event_id": "864731"
+        },
+        {
+            "id": "28838669",
+            "sport_id": "4",
+            "time": "1534064400",
+            "time_status": "0",
+            "league": {
+                "id": "9962116",
+                "name": "One Day Internationals"
+            },
+            "home": {
+                "id": "22161",
+                "name": "Sri Lanka"
+            },
+            "away": {
+                "id": "50146",
+                "name": "South Africa (5th ODI)"
+            },
+            "our_event_id": "868494"
+        },
+        {
+            "id": "28840085",
+            "sport_id": "4",
+            "time": "1534080600",
+            "time_status": "0",
+            "league": {
+                "id": "11893330",
+                "name": "T20 Blast"
+            },
+            "home": {
+                "id": "37319",
+                "name": "Durham"
+            },
+            "away": {
+                "id": "36395",
+                "name": "Lancashire"
+            },
+            "our_event_id": "783800"
+        },
+        {
+            "id": "28840090",
+            "sport_id": "4",
+            "time": "1534080600",
+            "time_status": "0",
+            "league": {
+                "id": "11893330",
+                "name": "T20 Blast"
+            },
+            "home": {
+                "id": "36398",
+                "name": "Gloucestershire"
+            },
+            "away": {
+                "id": "37313",
+                "name": "Surrey"
+            },
+            "our_event_id": "783727"
+        },
+        {
+            "id": "28840091",
+            "sport_id": "4",
+            "time": "1534080600",
+            "time_status": "0",
+            "league": {
+                "id": "11893330",
+                "name": "T20 Blast"
+            },
+            "home": {
+                "id": "25506",
+                "name": "Hampshire"
+            },
+            "away": {
+                "id": "34775",
+                "name": "Essex"
+            },
+            "our_event_id": "783848"
+        },
+        {
+            "id": "28840097",
+            "sport_id": "4",
+            "time": "1534080600",
+            "time_status": "0",
+            "league": {
+                "id": "11893330",
+                "name": "T20 Blast"
+            },
+            "home": {
+                "id": "35814",
+                "name": "Somerset"
+            },
+            "away": {
+                "id": "37318",
+                "name": "Glamorgan"
+            },
+            "our_event_id": "783778"
+        },
+        {
+            "id": "28840103",
+            "sport_id": "4",
+            "time": "1534080600",
+            "time_status": "0",
+            "league": {
+                "id": "11893330",
+                "name": "T20 Blast"
+            },
+            "home": {
+                "id": "36397",
+                "name": "Worcestershire"
+            },
+            "away": {
+                "id": "36396",
+                "name": "Nottinghamshire"
+            },
+            "our_event_id": "783857"
+        },
+        {
+            "id": "28840109",
+            "sport_id": "4",
+            "time": "1534080600",
+            "time_status": "0",
+            "league": {
+                "id": "887470",
+                "name": "Womens Super League"
+            },
+            "home": {
+                "id": "47469",
+                "name": "Yorkshire Diamonds"
+            },
+            "away": {
+                "id": "47466",
+                "name": "Surrey Stars"
+            },
+            "our_event_id": "856492"
+        },
+        {
+            "id": "28842190",
+            "sport_id": "4",
+            "time": "1534081500",
+            "time_status": "0",
+            "league": {
+                "id": "9998907",
+                "name": "Tamil Nadu Premier League"
+            },
+            "home": {
+                "id": "46634",
+                "name": "Dindigul Dragons"
+            },
+            "away": {
+                "id": "46633",
+                "name": "Siechem Madurai Panthers"
+            },
+            "our_event_id": "873059"
+        },
+        {
+            "id": "28840106",
+            "sport_id": "4",
+            "time": "1534082400",
+            "time_status": "0",
+            "league": {
+                "id": "11893330",
+                "name": "T20 Blast"
+            },
+            "home": {
+                "id": "26182",
+                "name": "Kent"
+            },
+            "away": {
+                "id": "36401",
+                "name": "Middlesex"
+            },
+            "our_event_id": "783779"
+        },
+        {
+            "id": "28840783",
+            "sport_id": "4",
+            "time": "1534111200",
+            "time_status": "0",
+            "league": {
+                "id": "11416933",
+                "name": "Caribbean Premier League"
+            },
+            "home": {
+                "id": "48412",
+                "name": "Guyana Amazon Warriors"
+            },
+            "away": {
+                "id": "50057",
+                "name": "Barbados Tridents"
+            },
+            "our_event_id": "864753"
+        }
+    ]
+}

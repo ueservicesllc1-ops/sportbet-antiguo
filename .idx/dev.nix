@@ -1,3 +1,4 @@
+
 # To learn more about how to use Nix to configure your environment
 # see: https://developers.google.com/idx/guides/customize-idx-env
 {pkgs}: {
@@ -11,7 +12,9 @@
     pkgs.bun
   ];
   # Sets environment variables in the workspace
-  env = {};
+  env = {
+    BETS_API_TOKEN = "232432-zZmMPtRshmdZel";
+  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [

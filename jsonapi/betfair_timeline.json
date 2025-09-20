@@ -1,0 +1,175 @@
+{
+    "success": 1,
+    "results": [
+        {
+            "timeElapsed": 94,
+            "elapsedAddedTime": 4,
+            "inPlayMatchStatus": "Finished",
+            "elapsedRegularTime": 90,
+            "eventTypeId": 1,
+            "updateDetails": [
+                {
+                    "updateType": "KickOff",
+                    "elapsedRegularTime": 1,
+                    "matchTime": 1,
+                    "type": "KickOff",
+                    "updateTime": "2018-04-13T00:31:38.318Z",
+                    "updateId": 9
+                },
+                {
+                    "matchTime": 26,
+                    "elapsedRegularTime": 26,
+                    "updateTime": "2018-04-13T00:57:03.452Z",
+                    "updateId": 53,
+                    "team": "away",
+                    "updateType": "YellowCard",
+                    "teamName": "Sao Paulo",
+                    "type": "YellowCard"
+                },
+                {
+                    "type": "RedCard",
+                    "teamName": "Sao Paulo",
+                    "updateType": "RedCard",
+                    "team": "away",
+                    "updateId": 69,
+                    "updateTime": "2018-04-13T01:09:36.183Z",
+                    "matchTime": 38,
+                    "elapsedRegularTime": 38
+                },
+                {
+                    "matchTime": 48,
+                    "elapsedRegularTime": 45,
+                    "updateType": "FirstHalfEnd",
+                    "updateTime": "2018-04-13T01:18:47.965Z",
+                    "type": "FirstHalfEnd",
+                    "elapsedAddedTime": 3,
+                    "updateId": 91
+                },
+                {
+                    "elapsedRegularTime": 46,
+                    "updateType": "SecondHalfKickOff",
+                    "matchTime": 46,
+                    "type": "SecondHalfKickOff",
+                    "updateTime": "2018-04-13T01:36:29.554Z",
+                    "updateId": 96
+                },
+                {
+                    "type": "YellowCard",
+                    "teamName": "Rosario Central",
+                    "updateType": "YellowCard",
+                    "team": "home",
+                    "updateId": 99,
+                    "updateTime": "2018-04-13T01:39:19.856Z",
+                    "elapsedRegularTime": 48,
+                    "matchTime": 48
+                },
+                {
+                    "matchTime": 55,
+                    "elapsedRegularTime": 55,
+                    "updateTime": "2018-04-13T01:45:51.639Z",
+                    "team": "home",
+                    "updateId": 113,
+                    "updateType": "YellowCard",
+                    "teamName": "Rosario Central",
+                    "type": "YellowCard"
+                },
+                {
+                    "team": "home",
+                    "updateId": 130,
+                    "updateTime": "2018-04-13T01:55:42.798Z",
+                    "matchTime": 65,
+                    "elapsedRegularTime": 65,
+                    "type": "YellowCard",
+                    "updateType": "YellowCard",
+                    "teamName": "Rosario Central"
+                },
+                {
+                    "team": "home",
+                    "updateId": 153,
+                    "updateTime": "2018-04-13T02:13:06.002Z",
+                    "matchTime": 82,
+                    "elapsedRegularTime": 82,
+                    "type": "RedCard",
+                    "teamName": "Rosario Central",
+                    "updateType": "RedCard"
+                },
+                {
+                    "updateTime": "2018-04-13T02:19:52.196Z",
+                    "elapsedRegularTime": 89,
+                    "matchTime": 89,
+                    "updateId": 168,
+                    "team": "home",
+                    "type": "YellowCard",
+                    "updateType": "YellowCard",
+                    "teamName": "Rosario Central"
+                },
+                {
+                    "teamName": "Rosario Central",
+                    "updateType": "YellowCard",
+                    "type": "YellowCard",
+                    "elapsedRegularTime": 90,
+                    "matchTime": 94,
+                    "updateTime": "2018-04-13T02:25:11.874Z",
+                    "elapsedAddedTime": 4,
+                    "team": "home",
+                    "updateId": 185
+                },
+                {
+                    "type": "SecondHalfEnd",
+                    "updateTime": "2018-04-13T02:25:35.608Z",
+                    "matchTime": 95,
+                    "updateType": "SecondHalfEnd",
+                    "elapsedRegularTime": 90,
+                    "updateId": 188,
+                    "elapsedAddedTime": 5
+                }
+            ],
+            "score": {
+                "numberOfYellowCards": 6,
+                "numberOfCornersFirstHalf": 3,
+                "away": {
+                    "fullTimeScore": "0",
+                    "numberOfRedCards": 1,
+                    "bookingPoints": 35,
+                    "numberOfCards": 2,
+                    "numberOfCornersSecondHalf": 1,
+                    "sets": "",
+                    "penaltiesScore": "",
+                    "numberOfCorners": 1,
+                    "name": "Sao Paulo",
+                    "penaltiesSequence": [],
+                    "numberOfYellowCards": 1,
+                    "score": "0",
+                    "halfTimeScore": "0",
+                    "numberOfCornersFirstHalf": 0,
+                    "games": ""
+                },
+                "numberOfCards": 8,
+                "bookingPoints": 110,
+                "numberOfRedCards": 2,
+                "numberOfCorners": 7,
+                "home": {
+                    "numberOfYellowCards": 5,
+                    "penaltiesSequence": [],
+                    "name": "Rosario Central",
+                    "halfTimeScore": "0",
+                    "score": "0",
+                    "games": "",
+                    "numberOfCornersFirstHalf": 3,
+                    "numberOfRedCards": 1,
+                    "fullTimeScore": "0",
+                    "numberOfCards": 6,
+                    "bookingPoints": 75,
+                    "sets": "",
+                    "penaltiesScore": "",
+                    "numberOfCornersSecondHalf": 3,
+                    "numberOfCorners": 6
+                },
+                "numberOfCornersSecondHalf": 4
+            },
+            "status": "COMPLETE",
+            "eventId": 28667170,
+            "timeline_updated_at": "1523586712"
+        }
+    ]
+}

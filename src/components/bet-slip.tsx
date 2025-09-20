@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useBetSlip } from '@/contexts/bet-slip-context';
+import { useBetSlip, Bet } from '@/contexts/bet-slip-context';
 import { Button } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
@@ -12,6 +12,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { db } from '@/lib/firebase';
 import { addDoc, collection, doc, runTransaction, serverTimestamp } from 'firebase/firestore';
+import { Badge } from './ui/badge';
 
 export function BetSlip() {
   const { bets, removeBet, clearBets } = useBetSlip();
@@ -25,19 +26,11 @@ export function BetSlip() {
 
   const handlePlaceBet = async () => {
     if (!user) {
-        toast({
-            variant: 'destructive',
-            title: 'Debes iniciar sesión',
-            description: 'Por favor, accede a tu cuenta para realizar una apuesta.',
-        });
+        toast({ variant: 'destructive', title: 'Debes iniciar sesión', description: 'Por favor, accede a tu cuenta para realizar una apuesta.' });
         return;
     }
     if (!stake || stake <= 0) {
-        toast({
-            variant: 'destructive',
-            title: 'Monto inválido',
-            description: 'Por favor, introduce un monto para apostar.',
-        });
+        toast({ variant: 'destructive', title: 'Monto inválido', description: 'Por favor, introduce un monto para apostar.' });
         return;
     }
 
@@ -45,25 +38,18 @@ export function BetSlip() {
 
     try {
         const userWalletRef = doc(db, 'users', user.uid);
-
         await runTransaction(db, async (transaction) => {
             const userWalletDoc = await transaction.get(userWalletRef);
-            if (!userWalletDoc.exists()) {
-                throw new Error("No se encontró tu billetera.");
-            }
-
-            const currentBalance = userWalletDoc.data().balance;
-            if (currentBalance < stake) {
+            if (!userWalletDoc.exists() || userWalletDoc.data().balance < stake) {
                 throw new Error("Saldo insuficiente para realizar esta apuesta.");
             }
-
-            const newBalance = currentBalance - stake;
+            const newBalance = userWalletDoc.data().balance - stake;
             transaction.update(userWalletRef, { balance: newBalance });
 
             const newBetRef = doc(collection(db, 'user_bets'));
             transaction.set(newBetRef, {
                 userId: user.uid,
-                bets: bets.map(b => ({ event: b.event, selection: b.selection, odd: b.odd, market: b.market })),
+                bets: bets.map(b => ({ ...b, type: b.type || 'back' })), // Ensure type is stored
                 stake: stake,
                 totalOdds: totalOdds,
                 potentialWinnings: parseFloat(potentialWinnings),
@@ -72,58 +58,49 @@ export function BetSlip() {
             });
         });
         
-        toast({
-            title: '¡Apuesta realizada!',
-            description: 'Tu apuesta ha sido guardada y el monto ha sido descontado de tu saldo.',
-        });
-
+        toast({ title: '¡Apuesta realizada!', description: 'Tu apuesta ha sido guardada con éxito.' });
         clearBets();
         setStake('');
-
     } catch (error: any) {
         console.error("Error placing bet: ", error);
-        toast({
-            variant: 'destructive',
-            title: 'Error al apostar',
-            description: error.message || 'No se pudo guardar tu apuesta. Inténtalo de nuevo.',
-        });
+        toast({ variant: 'destructive', title: 'Error al apostar', description: error.message });
     } finally {
         setLoading(false);
     }
   }
 
-
   return (
-    <div className="flex h-full flex-col">
+    <Card className="flex flex-col h-full bg-card/80 backdrop-blur-lg">
       <CardHeader className="p-4">
         <CardTitle>Boleto de Apuesta</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow overflow-y-auto p-4">
         {bets.length === 0 ? (
-          <p className="text-center text-sm text-muted-foreground">
-            Seleccione una apuesta para empezar.
+          <p className="text-center text-sm text-muted-foreground pt-10">
+            Tus selecciones aparecerán aquí.
           </p>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {bets.map((bet) => (
-              <div key={bet.id} className="rounded-md border p-3 text-sm">
+              <div key={bet.id} className="rounded-md border bg-card p-3 text-sm shadow-sm">
                 <div className="flex items-start justify-between">
-                  <div>
+                  <div className='space-y-1'>
                     <p className="font-semibold">{bet.selection}</p>
-                    <p className="text-xs text-muted-foreground">{bet.event}</p>
+                    <p className="text-xs text-muted-foreground leading-tight">{bet.market}</p>
+                    <p className="text-xs text-muted-foreground/80 leading-tight">{bet.event}</p>
                   </div>
                   <div className='flex items-center gap-2'>
                     <span className="font-bold text-primary">{bet.odd.toFixed(2)}</span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6"
-                      onClick={() => removeBet(bet.id)}
-                    >
+                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeBet(bet.id)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
+                {bet.type && (
+                    <Badge className={`mt-2 text-xs ${bet.type === 'back' ? 'bg-blue-500 hover:bg-blue-500/90' : 'bg-pink-500 hover:bg-pink-500/90'}`}>
+                        {bet.type === 'back' ? 'A Favor' : 'En Contra'}
+                    </Badge>
+                )}
               </div>
             ))}
           </div>
@@ -152,13 +129,13 @@ export function BetSlip() {
               <span>Ganancia Potencial:</span>
               <span>${potentialWinnings}</span>
             </div>
-            <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" onClick={handlePlaceBet} disabled={loading}>
+            <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={handlePlaceBet} disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Realizar Apuesta
             </Button>
           </div>
         </CardFooter>
       )}
-    </div>
+    </Card>
   );
 }
