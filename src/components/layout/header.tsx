@@ -32,36 +32,17 @@ import { WalletSheet } from '../wallet/wallet-sheet';
 import { AuthForm } from '../auth/auth-form';
 
 function UserBalance() {
-  const { user } = useAuth();
-  const [balance, setBalance] = useState<number | null>(null);
+  const { userProfile } = useAuth();
 
-  useEffect(() => {
-    if (user) {
-      const userDocRef = doc(db, 'users', user.uid);
-      const unsubscribe = onSnapshot(userDocRef, (doc) => {
-        if (doc.exists() && typeof doc.data().balance === 'number') {
-          setBalance(doc.data().balance);
-        } else {
-          setBalance(null); 
-        }
-      });
-      return () => unsubscribe();
-    } else {
-      setBalance(null);
-    }
-  }, [user]);
-
-  if (balance === null && user) {
+  if (!userProfile) {
     return null;
   }
-  
-  if (balance === null) {
-      return null;
-  }
+
+  const { balance } = userProfile;
 
   return (
     <span className="font-bold text-primary">
-      ${balance.toFixed(2)}
+      ${(balance ?? 0).toFixed(2)}
     </span>
   );
 }

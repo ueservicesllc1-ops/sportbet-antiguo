@@ -1,8 +1,8 @@
 
 'use server';
 
-import { db } from '@/lib/firebase-admin'; // Corrected: Use Admin SDK for server actions
-import { addDoc, collection, doc, getDoc, increment, runTransaction, serverTimestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 import { revalidatePath } from 'next/cache';
 
 const WELCOME_BONUS = 100;
@@ -12,30 +12,31 @@ export async function requestWithdrawal(userId: string, amount: number) {
         throw new Error('Datos de solicitud de retiro inválidos.');
     }
 
-    // Note: The firestore methods below are from the client SDK, but they can work on the server
-    // when provided with an initialized Firestore instance from the Admin SDK.
-    const userDocRef = doc(db, 'users', userId);
-    const withdrawalRef = collection(db, 'withdrawals');
+    const userDocRef = db.collection('users').doc(userId);
+    const withdrawalRef = db.collection('withdrawals');
 
     try {
-        const userDoc = await getDoc(userDocRef);
-        if (!userDoc.exists()) {
+        const userDoc = await userDocRef.get();
+        if (!userDoc.exists) {
             throw new Error('Usuario no encontrado.');
         }
 
         const userData = userDoc.data();
+        if (!userData) {
+             throw new Error('No se encontraron datos de usuario.');
+        }
         const withdrawableBalance = Math.max(0, userData.balance - WELCOME_BONUS);
 
         if (amount > withdrawableBalance) {
             throw new Error('El monto solicitado excede el saldo retirable.');
         }
         
-        await addDoc(withdrawalRef, {
+        await withdrawalRef.add({
             userId: userId,
             userEmail: userData.email,
             amount: amount,
             status: 'pending',
-            requestedAt: serverTimestamp(),
+            requestedAt: FieldValue.serverTimestamp(),
         });
 
         revalidatePath('/admin/withdrawals');
@@ -57,29 +58,33 @@ export async function processWithdrawal(requestId: string, action: 'approve' | '
         throw new Error('ID de solicitud y acción son requeridos.');
     }
     
-    const requestDocRef = doc(db, 'withdrawals', requestId);
+    const requestDocRef = db.collection('withdrawals').doc(requestId);
 
     try {
-        // runTransaction expects the client SDK's Firestore instance.
-        await runTransaction(db, async (transaction) => {
+        await db.runTransaction(async (transaction) => {
             const requestDoc = await transaction.get(requestDocRef);
 
-            if (!requestDoc.exists() || requestDoc.data().status !== 'pending') {
+            if (!requestDoc.exists || requestDoc.data()?.status !== 'pending') {
                 throw new Error('La solicitud no existe o ya ha sido procesada.');
             }
 
-            const { userId, amount } = requestDoc.data();
+            const requestData = requestDoc.data();
+            if (!requestData) {
+                 throw new Error('No se encontraron datos en la solicitud.');
+            }
+
+            const { userId, amount } = requestData;
             const newStatus = action === 'approve' ? 'approved' : 'rejected';
 
             transaction.update(requestDocRef, {
                 status: newStatus,
-                processedAt: serverTimestamp(),
+                processedAt: FieldValue.serverTimestamp(),
             });
 
             if (action === 'approve') {
-                const userDocRef = doc(db, 'users', userId);
+                const userDocRef = db.collection('users').doc(userId);
                 transaction.update(userDocRef, {
-                    balance: increment(-amount)
+                    balance: FieldValue.increment(-amount)
                 });
             }
         });
@@ -112,15 +117,15 @@ export async function submitDepositNotification(prevState: unknown, formData: Fo
     }
 
     try {
-        const notificationsRef = collection(db, 'deposit_notifications');
-        await addDoc(notificationsRef, {
+        const notificationsRef = db.collection('deposit_notifications');
+        await notificationsRef.add({
             userId,
             userEmail,
             amount,
             reference,
             notes,
             status: 'pending',
-            createdAt: serverTimestamp()
+            createdAt: FieldValue.serverTimestamp()
         });
 
         revalidatePath('/admin/deposits');

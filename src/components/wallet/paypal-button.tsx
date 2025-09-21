@@ -8,6 +8,7 @@ import { createOrder, captureOrder } from '@/lib/paypal';
 import { Loader2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { cn } from '@/lib/utils';
+import { updateUserBalance } from '@/app/wallet/actions'; // <-- IMPORT THE ACTION
 
 interface PaypalButtonProps {
   amount: number;
@@ -37,7 +38,6 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
             }
             
             const script = document.createElement("script");
-            // The Client ID is now part of the script URL as requested
             script.src = `https://www.paypal.com/sdk/js?client-id=AfU-04zHwad560P4nU6LVMd7qnrY41c0TOdA9LUbN_6-lmztaHfxJz1p7-ByIt6-uoqSGr6OcdaO3b3m&currency=USD&intent=capture`;
             script.async = true;
 
@@ -59,7 +59,6 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
 
     useEffect(() => {
         if (scriptLoaded && paypalButtonsRef.current && window.paypal) {
-            // Clear previous buttons before rendering new ones
             paypalButtonsRef.current.innerHTML = "";
 
             try {
@@ -76,7 +75,7 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                             if (order.id) {
                                 return order.id;
                             }
-                             const errorDetail = order.details?.[0] || { issue: 'UNKNOWN_ERROR', description: 'No se pudo crear la orden en el servidor.' };
+                            const errorDetail = order.details?.[0] || { issue: 'UNKNOWN_ERROR', description: 'No se pudo crear la orden en el servidor.' };
                             throw new Error(errorDetail.description);
                         } catch (err: any) {
                              console.error("Create Order Error:", err);
@@ -94,19 +93,32 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                         }
 
                         try {
-                            const result = await captureOrder(data.orderID, user.uid);
-                            if (result.success) {
-                                toast({
-                                    title: '¡Depósito Exitoso!',
-                                    description: `Se han añadido $${amount.toFixed(2)} a tu saldo.`,
-                                    className: 'bg-green-600 border-green-600 text-white'
-                                });
-                                onPaymentSuccess();
+                            const captureResult = await captureOrder(data.orderID, user.uid);
+                            if (captureResult.success) {
+                                
+                                // --- THIS IS THE FIX --- 
+                                // After capturing the order, update the user's balance in Firestore
+                                const balanceUpdateResult = await updateUserBalance(user.uid, amount);
+
+                                if (balanceUpdateResult.success) {
+                                    toast({
+                                        title: '¡Depósito Exitoso!',
+                                        description: `Se han añadido $${amount.toFixed(2)} a tu saldo.`,
+                                        className: 'bg-green-600 border-green-600 text-white'
+                                    });
+                                    onPaymentSuccess(); // This will trigger UI updates like resetting the amount
+                                } else {
+                                    // Handle cases where the balance update fails after payment
+                                    throw new Error(balanceUpdateResult.message || 'El pago fue procesado, pero hubo un error al actualizar tu saldo.');
+                                }
+
                             } else {
-                                throw new Error(result.message);
+                                throw new Error(captureResult.message);
                             }
                         } catch (err: any) {
-                            const errMessage = 'No se pudo completar el pago. Por favor, verifica tus fondos de PayPal o intenta más tarde.';
+                            console.error("OnApprove Error:", err);
+                            // This error message is more comprehensive for the user
+                            const errMessage = err.message || 'No se pudo completar el pago. Si los fondos fueron debitados, contacta a soporte.';
                             setError(errMessage);
                         } finally {
                             setIsProcessing(false);

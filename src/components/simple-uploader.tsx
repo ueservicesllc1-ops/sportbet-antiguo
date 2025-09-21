@@ -1,9 +1,9 @@
 
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom';
 import { uploadFile } from '@/app/upload/actions';
-import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 const initialState = {
@@ -26,7 +26,7 @@ function SubmitButton() {
 }
 
 export function SimpleUploader() {
-  const [state, formAction] = useFormState(uploadFile, initialState);
+  const [state, formAction] = useActionState(uploadFile, initialState);
   const { toast } = useToast();
 
   useEffect(() => {

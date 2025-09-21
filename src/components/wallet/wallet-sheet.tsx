@@ -247,7 +247,7 @@ export function WalletSheet() {
       <div className="space-y-6">
         <Card className="text-center bg-secondary/50">
           <CardHeader className='p-2'><CardTitle className="text-sm font-medium text-muted-foreground">Saldo Total</CardTitle></CardHeader>
-          <CardContent className='p-2 pt-0'><p className="text-3xl font-bold tracking-tight text-primary">${balance !== null ? balance.toFixed(2) : '0.00'}</p></CardContent>
+          <CardContent className='p-2 pt-0'><p className="text-3xl font-bold tracking-tight text-primary">${(balance ?? 0).toFixed(2)}</p></CardContent>
         </Card>
         
         <Separator />
