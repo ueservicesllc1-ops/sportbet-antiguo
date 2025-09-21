@@ -9,7 +9,6 @@ import { BetSlipProvider } from '@/contexts/bet-slip-context';
 import { Footer } from '@/components/layout/footer';
 import { SecondaryNav } from '@/components/layout/secondary-nav';
 import { FeaturedMatches } from '@/components/featured-matches';
-import { SimpleUploader } from '@/components/simple-uploader';
 import { UserBalanceDisplay } from '@/components/ui/user-balance-display'; // <-- IMPORT THE NEW COMPONENT
 
 export default function Home() {
@@ -34,12 +33,6 @@ export default function Home() {
                 {/* +++ USER BALANCE DISPLAY +++ */}
                 <UserBalanceDisplay />
                 {/* +++ END USER BALANCE DISPLAY +++ */}
-
-                {/* +++ Simple Uploader (if you want to keep it) +++ */}
-                <div className="my-8 p-4 border rounded-lg">
-                  <SimpleUploader />
-                </div>
-                {/* +++ End Simple Uploader +++ */}
                 
                 <FeaturedMatches />
                 <Sportsbook />
