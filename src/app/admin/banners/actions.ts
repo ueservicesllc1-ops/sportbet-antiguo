@@ -1,8 +1,7 @@
 
 'use server';
 
-import { getFirebaseAdmin } from '@/lib/firebase-admin';
-import { db } from '@/lib/firebase';
+import { db, storage } from '@/lib/firebase-admin'; // Corrected: Use Admin SDK
 import { addDoc, collection, deleteDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
@@ -55,11 +54,11 @@ export async function deleteBanner(bannerId: string) {
         // Delete from firestore
         await deleteDoc(bannerDocRef);
 
-        // Delete from storage if imagePath exists (for manually uploaded images in the future)
+        // Delete from storage if imagePath exists
         if(imagePath){
             try {
-                const admin = getFirebaseAdmin();
-                const bucket = admin.storage().bucket(); // Get bucket from centralized config
+                // Corrected: Use the imported storage object directly
+                const bucket = storage.bucket(); 
                 const file = bucket.file(imagePath);
                 await file.delete();
             } catch (error) {

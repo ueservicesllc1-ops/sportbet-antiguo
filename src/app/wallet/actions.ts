@@ -1,66 +1,77 @@
 
 'use server';
 
-import { getFirebaseAdmin } from '@/lib/firebase-admin';
-import { db } from '@/lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase-admin'; // Firestore for data
+import { s3Client, B2_BUCKET_NAME } from '@/lib/b2'; // B2 for files
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { revalidatePath } from 'next/cache';
+import { FieldValue } from 'firebase-admin/firestore';
+import crypto from 'crypto';
 
-export async function updateUserVerification(prevState: any, formData: FormData) {
+const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
+
+export async function submitVerificationRequest(prevState: any, formData: FormData) {
+    console.log("--- [DEBUG] Starting Verification Request ---");
+    console.log("[DEBUG] B2_BUCKET_NAME:", process.env.B2_BUCKET_NAME);
+    console.log("[DEBUG] FIREBASE_PROJECT_ID:", process.env.FIREBASE_PROJECT_ID);
+
     const uid = formData.get('uid') as string | null;
     if (!uid) {
-         return { success: false, message: 'Error de autenticación. No se pudo obtener el ID de usuario.' };
+        console.error("[DEBUG] Auth Error: UID is null.");
+        return { success: false, message: 'Error de autenticación. Inicia sesión de nuevo.' };
     }
 
-    const realName = formData.get('realName') as string | null;
-    const idNumber = formData.get('idNumber') as string | null;
     const idPhoto = formData.get('idPhoto') as File | null;
-    
-
-    if (!realName || realName.trim().length < 3) {
-        return { success: false, message: 'El nombre es requerido y debe tener al menos 3 caracteres.' };
-    }
-    if (!idNumber || idNumber.trim().length < 5) {
-        return { success: false, message: 'El número de ID es requerido y debe tener al menos 5 caracteres.' };
-    }
     if (!idPhoto || idPhoto.size === 0) {
-        return { success: false, message: 'La foto del ID es requerida.' };
+        return { success: false, message: 'La foto de tu documento es requerida.' };
     }
 
     try {
-        const admin = await getFirebaseAdmin();
-        const bucket = admin.storage().bucket();
-        const filePath = `user-documents/${uid}/${Date.now()}-${idPhoto.name}`;
-        const file = bucket.file(filePath);
+        console.log("[DEBUG] Preparing file for upload...");
         const fileBuffer = Buffer.from(await idPhoto.arrayBuffer());
+        const fileName = generateFileName();
+        const fileExtension = idPhoto.name.split('.').pop() || 'jpg';
+        const fileKey = `verifications/${uid}/${fileName}.${fileExtension}`;
+        console.log("[DEBUG] Generated File Key for B2:", fileKey);
 
-        // Upload the file and make it public
-        await file.save(fileBuffer, {
-            metadata: { 
-                contentType: idPhoto.type,
-            },
-            public: true,
+        const putCommand = new PutObjectCommand({
+            Bucket: B2_BUCKET_NAME,
+            Key: fileKey,
+            Body: fileBuffer,
+            ContentType: idPhoto.type,
         });
-        
-        // Get the public URL
-        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
-        
-        const userDocRef = doc(db, 'users', uid);
 
-        await updateDoc(userDocRef, {
-            realName: realName,
-            idNumber: idNumber,
-            idPhotoUrl: publicUrl,
-            verificationStatus: 'pending'
-        });
-        
+        console.log("--- [DEBUG] Uploading to B2 --- ");
+        await s3Client.send(putCommand);
+        console.log("--- [DEBUG] B2 Upload Complete ---");
+
+        const publicUrl = `https://f005.backblazeb2.com/file/${B2_BUCKET_NAME}/${fileKey}`;
+        console.log("[DEBUG] Constructed Public URL:", publicUrl);
+
+        const verificationData = {
+            userId: uid,
+            firstName: formData.get('firstName') as string,
+            lastName: formData.get('lastName') as string,
+            email: formData.get('email') as string,
+            photoUrl: publicUrl,
+            status: 'pending' as const,
+            createdAt: FieldValue.serverTimestamp(),
+        };
+
+        console.log("--- [DEBUG] Writing to Firestore --- ");
+        const verificationRef = db.collection('verifications').doc();
+        await verificationRef.set(verificationData);
+        console.log("--- [DEBUG] Firestore Write Complete ---");
+
+        const userDocRef = db.collection('users').doc(uid);
+        await userDocRef.update({ verificationStatus: 'pending' });
+
         revalidatePath('/wallet');
-        revalidatePath('/admin/verifications');
-        return { success: true, message: 'Documentos enviados para verificación.' };
+        return { success: true, message: '¡Excelente! Tus datos han sido enviados y están en revisión.' };
 
     } catch (error) {
-        console.error('Error updating user verification', error);
-        const errorMessage = error instanceof Error ? error.message : 'No se pudo actualizar la información de verificación.';
-        return { success: false, message: errorMessage };
+        console.error('--- [DEBUG] FULL ERROR ---', error);
+        const errorMessage = error instanceof Error ? error.message : 'Ocurrió un error inesperado.';
+        return { success: false, message: `Error en el servidor: ${errorMessage}` };
     }
 }

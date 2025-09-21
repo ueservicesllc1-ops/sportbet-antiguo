@@ -1,8 +1,7 @@
 
-
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import { db } from '@/lib/firebase';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import {
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Loader2, ShieldCheck, ShieldAlert, ShieldX } from 'lucide-react';
+import { Loader2, ShieldCheck, ShieldAlert, ShieldX, MoreHorizontal, DollarSign } from 'lucide-react';
 import type { UserProfile, UserRole, VerificationStatus } from '@/contexts/auth-context';
 import {
   DropdownMenu,
@@ -24,12 +23,23 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
-import { updateUserRole } from '../actions';
+import { updateUserRole, addBalanceToUser } from '../actions';
 import { useToast } from '@/hooks/use-toast';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 
 function RoleBadge({ role }: { role: UserRole }) {
     const variant: "default" | "secondary" | "destructive" | "outline" =
@@ -62,11 +72,77 @@ function VerificationStatusBadge({ status }: { status: VerificationStatus }) {
   }
 }
 
+function AddBalanceDialog({ user, isOpen, onOpenChange }: { user: UserProfile; isOpen: boolean; onOpenChange: (open: boolean) => void; }) {
+    const [amount, setAmount] = useState('');
+    const [isPending, startTransition] = useTransition();
+    const { toast } = useToast();
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const numericAmount = parseFloat(amount);
+        if (isNaN(numericAmount) || numericAmount <= 0) {
+            toast({ variant: 'destructive', title: 'Error', description: 'Por favor, ingresa un monto válido.' });
+            return;
+        }
+
+        startTransition(async () => {
+            try {
+                await addBalanceToUser(user.uid, numericAmount);
+                toast({ title: 'Éxito', description: `Se agregaron ${numericAmount.toFixed(2)} al saldo de ${user.email}.` });
+                onOpenChange(false);
+                setAmount('');
+            } catch (error) {
+                const errorMessage = error instanceof Error ? error.message : "Ocurrió un error desconocido.";
+                toast({ variant: 'destructive', title: 'Error al agregar saldo', description: errorMessage });
+            }
+        });
+    };
+
+    return (
+        <Dialog open={isOpen} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-[425px]">
+                <form onSubmit={handleSubmit}>
+                    <DialogHeader>
+                        <DialogTitle>Añadir Saldo</DialogTitle>
+                        <DialogDescription>
+                            Añadir saldo manualmente a la cuenta de <span className="font-bold">{user.email}</span>. El saldo actual es <span className="font-mono">${(user.balance || 0).toFixed(2)}</span>.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="amount" className="text-right">
+                                Monto
+                            </Label>
+                            <Input
+                                id="amount"
+                                type="number"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                className="col-span-3"
+                                placeholder="Ej: 50.00"
+                                step="0.01"
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button type="submit" disabled={isPending}>
+                            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} 
+                            Confirmar y Añadir
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 export function UsersTable({ initialUsers }: { initialUsers: UserProfile[]}) {
   const [users, setUsers] = useState<UserProfile[]>(initialUsers);
   const [loading, setLoading] = useState(!initialUsers || initialUsers.length === 0);
   const { userProfile, isSuperAdmin } = useAuth();
   const { toast } = useToast();
+  const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
+  const [isAddBalanceOpen, setIsAddBalanceOpen] = useState(false);
 
   useEffect(() => {
      const q = query(collection(db, 'users'), orderBy('createdAt', 'desc'));
@@ -94,6 +170,10 @@ export function UsersTable({ initialUsers }: { initialUsers: UserProfile[]}) {
     }
   }
 
+  const openAddBalanceDialog = (user: UserProfile) => {
+    setSelectedUser(user);
+    setIsAddBalanceOpen(true);
+  };
 
   if (loading) {
     return (
@@ -145,11 +225,21 @@ export function UsersTable({ initialUsers }: { initialUsers: UserProfile[]}) {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Cambiar Rol</DropdownMenuLabel>
+                                <DropdownMenuLabel>Acciones de Super Admin</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => handleRoleChange(user.uid, 'user')}>Usuario</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleRoleChange(user.uid, 'admin')}>Admin</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleRoleChange(user.uid, 'superadmin')}>Super Admin</DropdownMenuItem>
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem onClick={() => openAddBalanceDialog(user)}>
+                                        <DollarSign className="mr-2 h-4 w-4" />
+                                        <span>Añadir Saldo</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuLabel>Cambiar Rol</DropdownMenuLabel>
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem onClick={() => handleRoleChange(user.uid, 'user')}>Usuario</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleRoleChange(user.uid, 'admin')}>Admin</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleRoleChange(user.uid, 'superadmin')}>Super Admin</DropdownMenuItem>
+                                </DropdownMenuGroup>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>
@@ -157,6 +247,13 @@ export function UsersTable({ initialUsers }: { initialUsers: UserProfile[]}) {
                 ))}
             </TableBody>
         </Table>
+        {selectedUser && (
+            <AddBalanceDialog
+                isOpen={isAddBalanceOpen}
+                onOpenChange={setIsAddBalanceOpen}
+                user={selectedUser}
+            />
+        )}
     </div>
   );
 }

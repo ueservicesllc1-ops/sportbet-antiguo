@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, doc, getDocs, orderBy, query, updateDoc, Timestamp } from 'firebase/firestore';
+import { collection, doc, getDocs, orderBy, query, updateDoc, Timestamp, writeBatch, increment } from 'firebase/firestore';
 import type { UserProfile, UserRole } from '@/contexts/auth-context';
 import { revalidatePath } from 'next/cache';
 
@@ -46,7 +46,6 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
         throw new Error('ID de usuario y nuevo rol son requeridos.');
     }
     
-    // Add any extra checks here, e.g., ensuring only a superadmin can make this change.
     // This should also be protected by Firestore security rules.
 
     const userDocRef = doc(db, 'users', userId);
@@ -60,5 +59,46 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
     } catch (error) {
         console.error("Error updating user role:", error);
         throw new Error('No se pudo actualizar el rol del usuario.');
+    }
+}
+
+export async function addBalanceToUser(userId: string, amount: number) {
+    if (!userId || !amount) {
+        throw new Error('El ID de usuario y el monto son requeridos.');
+    }
+
+    const parsedAmount = Number(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+        throw new Error('El monto debe ser un número positivo.');
+    }
+
+    const userDocRef = doc(db, 'users', userId);
+    // Create a new document in a 'manual_deposits' collection for tracking
+    const depositDocRef = doc(collection(db, 'manual_deposits'));
+
+    // Use a batch to ensure both operations succeed or fail together
+    const batch = writeBatch(db);
+
+    batch.update(userDocRef, {
+        balance: increment(parsedAmount)
+    });
+
+    batch.set(depositDocRef, {
+        userId: userId,
+        amount: parsedAmount,
+        createdAt: Timestamp.now(),
+        status: 'completed',
+        type: 'manual_deposit',
+        adminId: 'current_admin_id', // placeholder - in a real app you'd get the current admin's ID
+    });
+
+    try {
+        await batch.commit();
+        revalidatePath('/admin/users');
+        revalidatePath('/wallet'); // Also revalidate user's wallet page
+        return { success: true, message: `Se agregaron ${parsedAmount} al saldo del usuario.` };
+    } catch (error) {
+        console.error("Error adding balance to user:", error);
+        throw new Error('No se pudo agregar el saldo al usuario.');
     }
 }

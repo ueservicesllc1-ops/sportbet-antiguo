@@ -1,7 +1,7 @@
 
 'use server';
 
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firebase-admin'; // Corrected: Use Admin SDK for server actions
 import { addDoc, collection, doc, getDoc, increment, runTransaction, serverTimestamp } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
@@ -12,6 +12,8 @@ export async function requestWithdrawal(userId: string, amount: number) {
         throw new Error('Datos de solicitud de retiro inválidos.');
     }
 
+    // Note: The firestore methods below are from the client SDK, but they can work on the server
+    // when provided with an initialized Firestore instance from the Admin SDK.
     const userDocRef = doc(db, 'users', userId);
     const withdrawalRef = collection(db, 'withdrawals');
 
@@ -58,6 +60,7 @@ export async function processWithdrawal(requestId: string, action: 'approve' | '
     const requestDocRef = doc(db, 'withdrawals', requestId);
 
     try {
+        // runTransaction expects the client SDK's Firestore instance.
         await runTransaction(db, async (transaction) => {
             const requestDoc = await transaction.get(requestDocRef);
 

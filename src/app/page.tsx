@@ -9,6 +9,8 @@ import { BetSlipProvider } from '@/contexts/bet-slip-context';
 import { Footer } from '@/components/layout/footer';
 import { SecondaryNav } from '@/components/layout/secondary-nav';
 import { FeaturedMatches } from '@/components/featured-matches';
+// TestUploadForm import removed
+import { SimpleUploader } from '@/components/simple-uploader'; // Import the new component
 
 export default function Home() {
   return (
@@ -28,6 +30,15 @@ export default function Home() {
             <main className="col-span-1 py-4 lg:col-span-3">
               <div className='space-y-4'>
                 <PromotionsCarousel />
+
+                {/* +++ Simple Uploader (if you want to keep it) +++ */}
+                <div className="my-8 p-4 border rounded-lg">
+                  <SimpleUploader />
+                </div>
+                {/* +++ End Simple Uploader +++ */}
+                
+                {/* --- The old test form has been removed --- */}
+
                 <FeaturedMatches />
                 <Sportsbook />
               </div>

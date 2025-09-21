@@ -8,7 +8,7 @@ import { Loader2, ShieldAlert, Check, X, FileImage } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { collection, onSnapshot, orderBy, query, type Timestamp } from "firebase/firestore";
+import { collection, onSnapshot, query, where, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ export default function AdminVerificationsPage() {
     const { isAdmin, loading: authLoading } = useAuth();
     const router = useRouter();
 
-     useEffect(() => {
+    useEffect(() => {
         if (!authLoading && !isAdmin) {
             router.replace('/admin');
         }
@@ -44,21 +44,27 @@ export default function AdminVerificationsPage() {
 
     useEffect(() => {
         if (!isAdmin) return;
-        const q = query(collection(db, 'users'), orderBy('verificationStatus', 'desc'));
+
+        // **FIXED QUERY**: Efficiently fetch all relevant requests (pending, verified, rejected).
+        const q = query(collection(db, 'users'), where('verificationStatus', 'in', ['pending', 'verified', 'rejected']));
+
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            const reqs: VerificationRequest[] = [];
-            snapshot.forEach(doc => {
-                const data = doc.data() as UserProfile;
-                if(data.verificationStatus !== 'unverified' && data.realName) {
-                    reqs.push(data as VerificationRequest);
-                }
-            });
+            // **FIXED LOGIC**: Directly map the data without the buggy 'realName' check.
+            const reqs: VerificationRequest[] = snapshot.docs.map(doc => doc.data() as VerificationRequest);
             setRequests(reqs);
+            setLoading(false);
+        }, (error) => {
+            console.error("Error fetching verification requests:", error);
+            toast({
+                variant: 'destructive',
+                title: 'Error de Carga',
+                description: 'No se pudieron obtener las solicitudes de verificación. Por favor, revisa la consola para más detalles.'
+            });
             setLoading(false);
         });
 
         return () => unsubscribe();
-    }, [isAdmin]);
+    }, [isAdmin, toast]);
     
     const handleProcess = async (id: string, action: 'approve' | 'reject') => {
         setProcessingId(id);
@@ -129,18 +135,18 @@ export default function AdminVerificationsPage() {
                                 )}
                                 {pendingRequests.map(req => (
                                     <TableRow key={req.uid}>
-                                        <TableCell className="font-medium">{req.email}</TableCell>
-                                        <TableCell>{req.realName}</TableCell>
-                                        <TableCell className="font-mono">{req.idNumber}</TableCell>
+                                        <TableCell className="font-medium">{req.email || 'N/A'}</TableCell>
+                                        <TableCell>{req.realName || 'No especificado'}</TableCell>
+                                        <TableCell className="font-mono">{req.idNumber || 'N/A'}</TableCell>
                                         <TableCell className="text-center">
-                                            {req.idPhotoUrl && (
+                                            {req.idPhotoUrl ? (
                                                 <DialogTrigger asChild>
                                                     <Button variant="outline" size="sm">
                                                         <FileImage className="mr-2 h-4 w-4" />
                                                         Ver Foto
                                                     </Button>
                                                 </DialogTrigger>
-                                            )}
+                                            ) : 'Sin foto'}
                                             
                                         </TableCell>
                                         <TableCell className="text-center">
@@ -164,20 +170,20 @@ export default function AdminVerificationsPage() {
                                                 </Button>
                                             </div>
                                         </TableCell>
-                                        <DialogContent className="max-w-xl">
-                                             <DialogHeader>
-                                                <DialogTitle>Documento de {req.realName}</DialogTitle>
-                                                <DialogDescription>
-                                                    Documento de identidad subido por el usuario.
-                                                </DialogDescription>
-                                             </DialogHeader>
-                                            
-                                             {req.idPhotoUrl && (
+                                        {req.idPhotoUrl && (
+                                            <DialogContent className="max-w-xl">
+                                                <DialogHeader>
+                                                    <DialogTitle>Documento de {req.realName || req.email}</DialogTitle>
+                                                    <DialogDescription>
+                                                        Documento de identidad subido por el usuario.
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                                
                                                 <div className="mt-4 rounded-md bg-secondary p-4 relative aspect-video">
-                                                  <Image src={req.idPhotoUrl} alt={`Documento de ${req.realName}`} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-contain rounded-md" />
+                                                <Image src={req.idPhotoUrl} alt={`Documento de ${req.realName}`} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-contain rounded-md" />
                                                 </div>
-                                             )}
-                                        </DialogContent>
+                                            </DialogContent>
+                                        )}
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -208,7 +214,7 @@ export default function AdminVerificationsPage() {
                                 {processedRequests.map(req => (
                                     <TableRow key={req.uid}>
                                         <TableCell className="font-medium">{req.email}</TableCell>
-                                        <TableCell>{req.realName}</TableCell>
+                                        <TableCell>{req.realName || 'No especificado'}</TableCell>
                                         <TableCell><StatusBadge status={req.verificationStatus} /></TableCell>
                                     </TableRow>
                                 ))}

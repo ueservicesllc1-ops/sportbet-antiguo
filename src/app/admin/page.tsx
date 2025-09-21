@@ -2,6 +2,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, DollarSign, BarChart3 } from "lucide-react";
 
+// This forces the page to be dynamically rendered, ensuring data is always fresh.
+export const dynamic = 'force-dynamic';
+
 const stats = [
     { title: "Usuarios Registrados", value: "1,250", icon: Users, change: "+12.5%" },
     { title: "Apuestas Totales", value: "8,420", icon: BarChart3, change: "+8.2%" },
@@ -28,20 +31,6 @@ export default function AdminPage() {
         ))}
       </div>
 
-       <Card className="mt-8">
-            <CardHeader>
-                <CardTitle>Bienvenido al Panel de Administración</CardTitle>
-                <CardDescription>
-                    Aquí puedes gestionar los usuarios, ver estadísticas y controlar la configuración de la plataforma.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">
-                    Usa el menú de la izquierda para navegar por las diferentes secciones.
-                    Esta es una versión inicial con funcionalidades básicas.
-                </p>
-            </CardContent>
-        </Card>
     </div>
   );
 }

@@ -60,7 +60,7 @@ function generateShortId(): string {
     return `${numbers}${letter}`;
 }
 
-const SUPER_ADMINS = ['dev@sportbet.com', 'ypueservicesllc1@gmail.com'];
+const SUPER_ADMINS = ['dev@sportbet.com', 'ypueservicesllc1@gmail.com', 'luis5@gmail.com', 'luis6@gmail.com'];
 
 
 export function AuthProvider({ children }: { children: ReactNode }) {
