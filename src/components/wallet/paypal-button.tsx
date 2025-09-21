@@ -17,7 +17,7 @@ interface PaypalButtonProps {
 
 declare global {
   interface Window {
-    paypal?: any;
+    paypal?: object;
   }
 }
 
@@ -62,7 +62,7 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
             paypalButtonsRef.current.innerHTML = "";
 
             try {
-                window.paypal.Buttons({
+                (window.paypal as any).Buttons({
                     createOrder: async () => {
                         setError(null);
                         if (amount <= 0) {
@@ -77,7 +77,7 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                             }
                             const errorDetail = order.details?.[0] || { issue: 'UNKNOWN_ERROR', description: 'No se pudo crear la orden en el servidor.' };
                             throw new Error(errorDetail.description);
-                        } catch (err: any) {
+                        } catch (err: unknown) {
                              console.error("Create Order Error:", err);
                              setError('Hubo un problema al crear la orden de pago. Inténtalo de nuevo.');
                              throw err;
@@ -115,23 +115,25 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                             } else {
                                 throw new Error(captureResult.message);
                             }
-                        } catch (err: any) {
+                        } catch (err: unknown) {
                             console.error("OnApprove Error:", err);
                             // This error message is more comprehensive for the user
-                            const errMessage = err.message || 'No se pudo completar el pago. Si los fondos fueron debitados, contacta a soporte.';
+                            const errMessage = err instanceof Error ? err.message : 'No se pudo completar el pago. Si los fondos fueron debitados, contacta a soporte.';
                             setError(errMessage);
                         } finally {
                             setIsProcessing(false);
                         }
                     },
-                    onError: (err: any) => {
+                    onError: (err: unknown) => {
                         console.error("PayPal Buttons Error:", err);
-                        setError('Ocurrió un error con la interfaz de PayPal. Refresca la página y vuelve a intentarlo.');
+                         const errMessage = err instanceof Error ? err.message : 'Ocurrió un error con la interfaz de PayPal. Refresca la página y vuelve a intentarlo.';
+                        setError(errMessage);
                     }
                 }).render(paypalButtonsRef.current);
             } catch (err) {
                  console.error("Failed to render PayPal Buttons", err);
-                 setError("Error al renderizar los botones de PayPal.");
+                 const errMessage = err instanceof Error ? err.message : 'Error al renderizar los botones de PayPal.';
+                 setError(errMessage);
             }
         }
     }, [scriptLoaded, amount, user, onPaymentSuccess, toast]);

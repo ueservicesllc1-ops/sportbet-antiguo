@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Search, ShieldAlert, Coins, Fingerprint } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { addFundsToUser, searchUsers } from "./actions";
-import { Badge } from "@/components/ui/badge";
+
 import { useAuth } from "@/contexts/auth-context";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -149,7 +149,7 @@ export default function AdminWalletsPage() {
             if (results.length === 0) {
                  toast({ variant: 'default', title: 'Sin Resultados', description: 'No se encontraron usuarios con ese criterio de búsqueda.' });
             }
-        } catch (error) {
+        } catch (err) {
             toast({ variant: 'destructive', title: 'Error', description: 'No se pudo realizar la búsqueda.' });
         } finally {
             setLoading(false);
@@ -185,8 +185,8 @@ export default function AdminWalletsPage() {
             setSelectedUser(null);
             setAmount('');
 
-        } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : "Ocurrió un error desconocido.";
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "Ocurrió un error desconocido.";
             toast({ variant: 'destructive', title: 'Error', description: errorMessage });
         } finally {
             setSubmitting(false);

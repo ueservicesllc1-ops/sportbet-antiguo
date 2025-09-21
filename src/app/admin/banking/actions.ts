@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
 const SETTINGS_COLLECTION = 'site_settings';
@@ -34,8 +34,7 @@ export async function getBankingSettings(): Promise<BankingInfo> {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
-            // We need to remove it before passing the object to a Client Component.
-            const { lastUpdated: _, ...settings } = data;
+            const { lastUpdated, ...settings } = data;
             return settings as BankingInfo;
         }
         return {};

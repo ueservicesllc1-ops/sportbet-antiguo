@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -63,7 +63,7 @@ export function AuthForm() {
       // The dialog will close automatically if the form is inside a DialogClose trigger,
       // or we can manage a state in the parent to close it.
       // For simplicity, we can wrap the submit button in DialogClose
-    } catch (error) {
+    } catch (_error) {
       // Error is handled in the auth context
     } finally {
       setLoading(false);
@@ -74,7 +74,7 @@ export function AuthForm() {
     setLoading(true);
     try {
         await signInWithGoogle();
-    } catch (error) {
+    } catch (_error) {
         // Error handled in context
     } finally {
         setLoading(false);
@@ -111,7 +111,7 @@ export function AuthForm() {
 
 interface AuthCardProps {
   buttonText: string;
-  form: any;
+  form: UseFormReturn<AuthFormValues>;
   onSubmit: (values: AuthFormValues) => void;
   loading: boolean;
   onGoogleSignIn: () => void;

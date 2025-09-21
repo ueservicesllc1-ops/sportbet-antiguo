@@ -103,7 +103,7 @@ export default function TerminosPage() {
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            Wingo proporciona sus servicios "tal como están". No garantizamos que el servicio sea ininterrumpido o libre de errores. No seremos responsables de ninguna pérdida o daño que surja del uso de nuestro sitio, incluyendo pérdidas de ganancias o datos.
+            Wingo proporciona sus servicios &quot;tal como están&quot;. No garantizamos que el servicio sea ininterrumpido o libre de errores. No seremos responsables de ninguna pérdida o daño que surja del uso de nuestro sitio, incluyendo pérdidas de ganancias o datos.
           </p>
         </CardContent>
       </Card>

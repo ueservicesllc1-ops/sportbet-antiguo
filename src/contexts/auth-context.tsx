@@ -162,12 +162,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
       await createUserProfile(userCredential.user);
       toast({ title: '¡Registro exitoso!', description: 'Bienvenido.' });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error signing up:', error);
+      const message = error instanceof Error ? error.message : 'Ocurrió un error desconocido.';
       toast({
         variant: 'destructive',
         title: 'Error en el registro',
-        description: error.message,
+        description: message,
       });
       throw error;
     }
@@ -178,7 +179,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
       await createUserProfile(userCredential.user);
       toast({ title: '¡Inicio de sesión exitoso!', description: 'Bienvenido de vuelta.' });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error signing in:', error);
       toast({
         variant: 'destructive',
@@ -195,7 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userCredential = await signInWithPopup(auth, provider);
       await createUserProfile(userCredential.user);
       toast({ title: '¡Inicio de sesión exitoso!', description: 'Bienvenido.' });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error signing in with Google:', error);
       toast({
         variant: 'destructive',
@@ -210,7 +211,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await firebaseSignOut(auth);
       toast({ title: 'Has cerrado sesión.' });
-    } catch (error: any) {
+    } catch (error: unknown) {
        console.error('Error signing out:', error);
        toast({
         variant: 'destructive',

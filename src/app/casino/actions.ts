@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { doc, runTransaction, increment, addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, runTransaction, increment, collection, serverTimestamp } from 'firebase/firestore';
 
 export async function placeCasinoBet(userId: string, betAmount: number): Promise<void> {
     if (!userId) {

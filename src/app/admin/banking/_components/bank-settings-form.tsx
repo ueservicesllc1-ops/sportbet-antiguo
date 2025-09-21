@@ -10,7 +10,7 @@ import { Loader2, Save, Banknote, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { BankingInfo } from '../actions';
 import { updateBankingSettings } from '../actions';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 const initialState = {

@@ -1,5 +1,5 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, DollarSign, BarChart3 } from "lucide-react";
 
 // This forces the page to be dynamically rendered, ensuring data is always fresh.

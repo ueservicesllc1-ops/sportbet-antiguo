@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -57,12 +58,12 @@ export default function UiParityCheckPage() {
           <div className="space-y-2">
             <Label htmlFor="original-screenshot">Original Screenshot</Label>
             <Input id="original-screenshot" type="file" accept="image/*" onChange={(e) => handleFileChange(e, setOriginalScreenshot)} />
-            {originalScreenshot && <img src={originalScreenshot} alt="Original Screenshot Preview" className="mt-2 rounded-lg" />}
+            {originalScreenshot && <div className="relative mt-2 h-64 w-full"><Image src={originalScreenshot} alt="Original Screenshot Preview" className="rounded-lg object-contain" fill /></div>}
           </div>
           <div className="space-y-2">
             <Label htmlFor="replica-screenshot">Replica Screenshot</Label>
             <Input id="replica-screenshot" type="file" accept="image/*" onChange={(e) => handleFileChange(e, setReplicaScreenshot)} />
-            {replicaScreenshot && <img src={replicaScreenshot} alt="Replica Screenshot Preview" className="mt-2 rounded-lg" />}
+            {replicaScreenshot && <div className="relative mt-2 h-64 w-full"><Image src={replicaScreenshot} alt="Replica Screenshot Preview" className="rounded-lg object-contain" fill /></div>}
           </div>
         </div>
 

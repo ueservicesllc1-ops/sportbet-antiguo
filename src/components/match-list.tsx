@@ -18,7 +18,7 @@ const INITIAL_VISIBLE_COUNT = 4;
 
 export function MatchList({ events, isUpcoming }: MatchListProps) {
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
-    const [oddsMap, setOddsMap] = useState<Record<string, any>>({});
+    const [oddsMap, setOddsMap] = useState<Record<string, object | null>>({});
     const [loadingOdds, setLoadingOdds] = useState<Record<string, boolean>>({});
 
     const visibleEvents = events.slice(0, visibleCount);
@@ -42,7 +42,7 @@ export function MatchList({ events, isUpcoming }: MatchListProps) {
         };
 
         fetchAllVisibleOdds();
-    }, [visibleCount, events, oddsMap]);
+    }, [visibleEvents, oddsMap]);
 
     const showMore = () => {
         setVisibleCount(prevCount => prevCount + 4);
@@ -57,11 +57,11 @@ export function MatchList({ events, isUpcoming }: MatchListProps) {
     return (
         <div className="space-y-3">
             {visibleEvents.map((event) => (
-                <MatchListItem 
-                    key={event.id} 
-                    event={event} 
-                    odds={oddsMap[event.id]} 
-                    isLoading={loadingOdds[event.id] ?? false} 
+                <MatchListItem
+                    key={event.id}
+                    event={event}
+                    odds={oddsMap[event.id]}
+                    isLoading={loadingOdds[event.id] ?? false}
                     isUpcoming={isUpcoming}
                 />
             ))}
@@ -76,7 +76,7 @@ export function MatchList({ events, isUpcoming }: MatchListProps) {
     );
 }
 
-function MatchListItem({ event, odds, isLoading, isUpcoming }: { event: BetfairEvent, odds: any, isLoading: boolean, isUpcoming: boolean }) {
+function MatchListItem({ event, odds, isLoading, isUpcoming }: { event: BetfairEvent, odds: object | null, isLoading: boolean, isUpcoming: boolean }) {
     const [formattedTime, setFormattedTime] = useState('');
 
     useEffect(() => {
@@ -103,7 +103,7 @@ function MatchListItem({ event, odds, isLoading, isUpcoming }: { event: BetfairE
     return (
         <div className="block rounded-md border bg-card p-3 transition-all">
             <div className="grid grid-cols-12 items-center gap-2 text-sm">
-                
+
                 <div className="col-span-12 md:col-span-7">
                      <Link href={`/match/${event.id}`} className="space-y-1 group">
                         <div className="font-semibold truncate group-hover:underline">

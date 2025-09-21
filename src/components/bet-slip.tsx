@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useBetSlip, Bet } from '@/contexts/bet-slip-context';
+import { useBetSlip } from '@/contexts/bet-slip-context';
 import { Button } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
@@ -11,7 +11,7 @@ import { Loader2, Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { db } from '@/lib/firebase';
-import { addDoc, collection, doc, runTransaction, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, runTransaction, serverTimestamp } from 'firebase/firestore';
 import { Badge } from './ui/badge';
 
 export function BetSlip() {
@@ -61,9 +61,10 @@ export function BetSlip() {
         toast({ title: '¡Apuesta realizada!', description: 'Tu apuesta ha sido guardada con éxito.' });
         clearBets();
         setStake('');
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error placing bet: ", error);
-        toast({ variant: 'destructive', title: 'Error al apostar', description: error.message });
+        const message = error instanceof Error ? error.message : 'Ocurrió un error desconocido.';
+        toast({ variant: 'destructive', title: 'Error al apostar', description: message });
     } finally {
         setLoading(false);
     }

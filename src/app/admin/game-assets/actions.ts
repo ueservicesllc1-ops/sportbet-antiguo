@@ -22,7 +22,7 @@ export async function getPenaltyGameAssets(): Promise<Record<string, string | nu
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
-            const { lastUpdated: _, ...assets } = data;
+            const { lastUpdated, ...assets } = data;
             return assets;
         }
         return {};
@@ -38,7 +38,7 @@ export async function getMinesGameAssets(): Promise<Record<string, string>> {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
-            const { lastUpdated: _, ...assets } = data;
+            const { lastUpdated, ...assets } = data;
             return assets as Record<string, string>;
         }
         return {};
@@ -54,7 +54,7 @@ export async function getLobbyAssets(): Promise<Record<string, string>> {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
-            const { lastUpdated: _, ...assets } = data;
+            const { lastUpdated, ...assets } = data;
             return assets as Record<string, string>;
         }
         return {};

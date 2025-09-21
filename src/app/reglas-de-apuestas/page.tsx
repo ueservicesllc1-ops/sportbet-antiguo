@@ -53,7 +53,7 @@ export default function ReglasDeApuestasPage() {
               </AccordionTrigger>
               <AccordionContent>
                 <ul className="space-y-3 text-muted-foreground list-disc pl-5">
-                    <li><span className="font-semibold">Tiempo Reglamentario (90 Minutos):</span> A menos que se especifique lo contrario (ej. "incluye prórroga"), todas las apuestas de fútbol se basan en el resultado al final de los 90 minutos de juego más el tiempo de descuento.</li>
+                    <li><span className="font-semibold">Tiempo Reglamentario (90 Minutos):</span> A menos que se especifique lo contrario (ej. &quot;incluye prórroga&quot;), todas las apuestas de fútbol se basan en el resultado al final de los 90 minutos de juego más el tiempo de descuento.</li>
                     <li><span className="font-semibold">Mercados de Tarjetas:</span> Solo cuentan las tarjetas mostradas a los jugadores en el campo. Las tarjetas a entrenadores o jugadores en el banquillo no cuentan. Una tarjeta roja directa cuenta como 2 tarjetas para algunos mercados.</li>
                     <li><span className="font-semibold">Mercados de Córners:</span> Solo cuentan los córners que se ejecutan. Los córners concedidos pero no ejecutados no cuentan.</li>
                 </ul>
@@ -68,7 +68,7 @@ export default function ReglasDeApuestasPage() {
               </AccordionTrigger>
               <AccordionContent>
                  <ul className="space-y-3 text-muted-foreground list-disc pl-5">
-                    <li><span className="font-semibold">Prórroga Incluida:</span> Para mercados como "Ganador del partido" (Moneyline) y Hándicap, el tiempo extra (prórroga) siempre cuenta para el resultado final.</li>
+                    <li><span className="font-semibold">Prórroga Incluida:</span> Para mercados como &quot;Ganador del partido&quot; (Moneyline) y Hándicap, el tiempo extra (prórroga) siempre cuenta para el resultado final.</li>
                     <li><span className="font-semibold">Actuaciones de Jugadores:</span> Las apuestas sobre puntos, rebotes, asistencias, etc., de un jugador serán anuladas si el jugador no participa en el partido.</li>
                 </ul>
               </AccordionContent>
@@ -82,7 +82,7 @@ export default function ReglasDeApuestasPage() {
               </AccordionTrigger>
               <AccordionContent>
                 <ul className="space-y-3 text-muted-foreground list-disc pl-5">
-                    <li><span className="font-semibold">Retirada de Jugadores:</span> Si un jugador se retira durante un partido, todas las apuestas a "Ganador del partido" serán anuladas. Las apuestas en mercados cuyo resultado ya esté determinado (ej. "Ganador del Primer Set") se mantendrán.</li>
+                    <li><span className="font-semibold">Retirada de Jugadores:</span> Si un jugador se retira durante un partido, todas las apuestas a &quot;Ganador del partido&quot; serán anuladas. Las apuestas en mercados cuyo resultado ya esté determinado (ej. &quot;Ganador del Primer Set&quot;) se mantendrán.</li>
                     <li><span className="font-semibold">Cambios de Superficie o Sede:</span> Si el partido se juega en una superficie o sede diferente a la programada, las apuestas se mantendrán.</li>
                 </ul>
               </AccordionContent>

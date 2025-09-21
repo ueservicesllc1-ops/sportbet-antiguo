@@ -86,7 +86,7 @@ export async function updateUserBalance(uid: string, amount: number) {
 
 
 // --- EXISTING FUNCTION: KYC Verification ---
-export async function submitVerificationRequest(prevState: any, formData: FormData) {
+export async function submitVerificationRequest(prevState: unknown, formData: FormData) {
     console.log("--- [DEBUG] Starting Verification Request ---");
     console.log("[DEBUG] B2_BUCKET_NAME:", process.env.B2_BUCKET_NAME);
     console.log("[DEBUG] FIREBASE_PROJECT_ID:", process.env.FIREBASE_PROJECT_ID);

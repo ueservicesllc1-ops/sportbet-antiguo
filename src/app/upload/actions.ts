@@ -13,7 +13,7 @@ const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex
  * Acción de servidor para subir un archivo a Backblaze B2.
  * Esta es una acción simple y aislada para propósitos de prueba y depuración.
  */
-export async function uploadFile(prevState: any, formData: FormData) {
+export async function uploadFile(prevState: unknown, formData: FormData) {
   const file = formData.get('file') as File | null;
 
   // 1. Validación del archivo
