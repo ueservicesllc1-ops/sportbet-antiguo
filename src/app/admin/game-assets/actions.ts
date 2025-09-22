@@ -1,9 +1,9 @@
 
-
 'use server';
 
-import { db } from '@/lib/firebase';
+import { db, storage } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { revalidatePath } from 'next/cache';
 
 const ASSET_COLLECTION = 'game_assets';
@@ -14,56 +14,81 @@ const MINES_DOC = 'mines';
 export interface FormState {
     success: boolean;
     message: string;
+    imageUrl?: string;
 }
 
-export async function getPenaltyGameAssets(): Promise<Record<string, string | number>> {
+// --- GETTERS ---
+
+async function getAssetsForGame(docId: string): Promise<Record<string, unknown>> {
     try {
-        const docRef = doc(db, ASSET_COLLECTION, PENALTY_SHOOTOUT_DOC);
+        const docRef = doc(db, ASSET_COLLECTION, docId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            const data = docSnap.data();
-            const { lastUpdated, ...assets } = data;
-            return assets;
+            return docSnap.data();
         }
         return {};
     } catch (error) {
-        console.error("Error getting game assets:", error);
+        console.error(`Error getting game assets for ${docId}:`, error);
         return {};
     }
 }
 
-export async function getMinesGameAssets(): Promise<Record<string, string>> {
+export const getPenaltyGameAssets = async () => getAssetsForGame(PENALTY_SHOOTOUT_DOC);
+export const getMinesGameAssets = async () => getAssetsForGame(MINES_DOC);
+export const getLobbyAssets = async () => getAssetsForGame(CASINO_LOBBY_DOC);
+
+
+// --- ACTIONS ---
+
+export async function uploadGameAsset(prevState: FormState | undefined, formData: FormData): Promise<FormState> {
+    const assetKey = formData.get('assetKey') as string | null;
+    const gameType = formData.get('gameType') as 'penalty_shootout' | 'mines';
+    const imageFile = formData.get('assetImageFile') as File | null;
+
+    if (!assetKey || !gameType) {
+        return { success: false, message: 'Falta la clave del recurso (assetKey) o el tipo de juego (gameType).' };
+    }
+    if (!imageFile || imageFile.size === 0) {
+        return { success: false, message: 'No se proporcionó ningún archivo de imagen.' };
+    }
+
+    const documentMap: Record<typeof gameType, string> = {
+        penalty_shootout: PENALTY_SHOOTOUT_DOC,
+        mines: MINES_DOC,
+    };
+    const docId = documentMap[gameType];
+    const storagePath = `game_assets/${gameType}/${assetKey}.png`;
+
     try {
-        const docRef = doc(db, ASSET_COLLECTION, MINES_DOC);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            const { lastUpdated, ...assets } = data;
-            return assets as Record<string, string>;
-        }
-        return {};
+        // Upload file to Firebase Storage
+        const storageRef = ref(storage, storagePath);
+        await uploadBytes(storageRef, imageFile, { contentType: imageFile.type });
+        const downloadURL = await getDownloadURL(storageRef);
+
+        // Save URL to Firestore
+        const docRef = doc(db, ASSET_COLLECTION, docId);
+        await setDoc(docRef, {
+            [assetKey]: downloadURL,
+            lastUpdated: serverTimestamp()
+        }, { merge: true });
+
+        // Revalidate paths
+        revalidatePath('/admin/game-assets');
+        if (gameType === 'penalty_shootout') revalidatePath('/casino/penalty-shootout');
+        if (gameType === 'mines') revalidatePath('/casino/mines');
+
+        return {
+            success: true,
+            message: 'El recurso del juego se ha actualizado correctamente.',
+            imageUrl: downloadURL,
+        };
+
     } catch (error) {
-        console.error("Error getting mines game assets:", error);
-        return {};
+        console.error('Error updating game asset:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Ocurrió un error desconocido.';
+        return { success: false, message: `No se pudo actualizar el recurso: ${errorMessage}` };
     }
 }
-
-export async function getLobbyAssets(): Promise<Record<string, string>> {
-    try {
-        const docRef = doc(db, ASSET_COLLECTION, CASINO_LOBBY_DOC);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            const { lastUpdated, ...assets } = data;
-            return assets as Record<string, string>;
-        }
-        return {};
-    } catch (error) {
-        console.error("Error getting lobby assets:", error);
-        return {};
-    }
-}
-
 
 export async function updateLobbyAssets(prevState: FormState | undefined, formData: FormData): Promise<FormState> {
     const urls: Record<string, string> = {};
@@ -82,11 +107,7 @@ export async function updateLobbyAssets(prevState: FormState | undefined, formDa
 
     try {
         const docRef = doc(db, ASSET_COLLECTION, CASINO_LOBBY_DOC);
-
-        await setDoc(docRef, {
-            ...urls,
-            lastUpdated: serverTimestamp()
-        }, { merge: true });
+        await setDoc(docRef, { ...urls, lastUpdated: serverTimestamp() }, { merge: true });
 
         revalidatePath('/admin/game-assets');
         revalidatePath('/casino');
@@ -98,51 +119,4 @@ export async function updateLobbyAssets(prevState: FormState | undefined, formDa
         const errorMessage = error instanceof Error ? error.message : 'Ocurrió un error desconocido.';
         return { success: false, message: `No se pudo actualizar la imagen: ${errorMessage}` };
     }
-}
-
-
-export async function updateGameAsset(prevState: FormState | undefined, formData: FormData): Promise<FormState> {
-  const assetKey = formData.get('assetKey') as string | null;
-  const assetImageUrl = formData.get('assetImageUrl') as string | null;
-  const gameType = formData.get('gameType') as 'penalty_shootout' | 'mines';
-  
-  if (!assetKey || !gameType) {
-    return { success: false, message: 'Falta la clave del recurso (assetKey) o el tipo de juego (gameType).' };
-  }
-  if (!assetImageUrl || !assetImageUrl.startsWith('http')) {
-    return { success: false, message: 'La URL del recurso no es válida.' };
-  }
-
-  const documentMap = {
-    penalty_shootout: PENALTY_SHOOTOUT_DOC,
-    mines: MINES_DOC,
-  };
-
-  const docId = documentMap[gameType];
-  
-  const revalidatePaths = ['/admin/game-assets'];
-  if (gameType === 'penalty_shootout') {
-    revalidatePaths.push('/casino/penalty-shootout');
-  } else if (gameType === 'mines') {
-    revalidatePaths.push('/casino/mines');
-  }
-
-
-  try {
-    const docRef = doc(db, ASSET_COLLECTION, docId);
-
-    await setDoc(docRef, {
-        [assetKey]: assetImageUrl,
-        lastUpdated: serverTimestamp()
-    }, { merge: true });
-
-    revalidatePaths.forEach(p => revalidatePath(p));
-    
-    return { success: true, message: 'El recurso del juego se ha actualizado correctamente.' };
-
-  } catch (error) {
-    console.error('Error updating game asset:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Ocurrió un error desconocido.';
-    return { success: false, message: `No se pudo actualizar el recurso: ${errorMessage}` };
-  }
 }

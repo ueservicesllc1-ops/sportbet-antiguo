@@ -1,10 +1,8 @@
 
-
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { AssetUploadForm } from "./_components/asset-upload-form";
 import { getPenaltyGameAssets, getLobbyAssets, getMinesGameAssets } from "./actions";
 import { LobbyAssetsForm } from "./_components/lobby-assets-form";
-
 
 const penaltyAssets = [
     { key: 'background', title: 'Imagen de Fondo/Portería', description: 'La imagen principal de la portería y el campo.' },
@@ -19,17 +17,31 @@ const minesAssets = [
     { key: 'mine', title: 'Imagen de la Mina', description: 'La imagen de la bomba que termina el juego.' },
 ];
 
+// Helper function to ensure only serializable string values are passed from Server to Client Components
+const sanitizeAssets = (assets: Record<string, unknown>): Record<string, string> => {
+    const sanitized: Record<string, string> = {};
+    for (const key in assets) {
+        if (typeof assets[key] === 'string') {
+            sanitized[key] = assets[key] as string;
+        }
+    }
+    return sanitized;
+};
 
 export default async function AdminGameAssetsPage() {
-    const currentPenaltyAssets = await getPenaltyGameAssets();
-    const currentMinesAssets = await getMinesGameAssets();
-    const lobbyAssets = await getLobbyAssets();
+    const currentPenaltyAssetsData = await getPenaltyGameAssets();
+    const currentMinesAssetsData = await getMinesGameAssets();
+    const lobbyAssetsData = await getLobbyAssets();
+
+    const currentPenaltyAssets = sanitizeAssets(currentPenaltyAssetsData);
+    const currentMinesAssets = sanitizeAssets(currentMinesAssetsData);
+    const sanitizedLobbyAssets = sanitizeAssets(lobbyAssetsData);
 
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold tracking-tight">Recursos de Juegos</h1>
 
-            <LobbyAssetsForm currentImages={lobbyAssets} />
+            <LobbyAssetsForm currentImages={sanitizedLobbyAssets} />
             
             <Card>
                 <CardHeader>
@@ -46,7 +58,7 @@ export default async function AdminGameAssetsPage() {
                             gameType="penalty_shootout"
                             title={asset.title}
                             description={asset.description}
-                            currentImageUrl={currentPenaltyAssets[asset.key] as string || null}
+                            currentImageUrl={currentPenaltyAssets[asset.key] || null}
                         />
                     ))}
                 </CardContent>
@@ -67,7 +79,7 @@ export default async function AdminGameAssetsPage() {
                             gameType="mines"
                             title={asset.title}
                             description={asset.description}
-                            currentImageUrl={currentMinesAssets[asset.key] as string || null}
+                            currentImageUrl={currentMinesAssets[asset.key] || null}
                         />
                     ))}
                 </CardContent>
@@ -75,5 +87,3 @@ export default async function AdminGameAssetsPage() {
         </div>
     )
 }
-
-    

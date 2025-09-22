@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
 import { useState, useEffect, useActionState, useRef } from 'react';
-import { KycForm } from './kyc-form'; // Re-importing the new form
+import { KycForm } from './kyc-form';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { requestWithdrawal, submitDepositNotification } from '@/app/admin/withdrawals/actions';
@@ -26,7 +26,6 @@ import { useFormStatus } from 'react-dom';
 
 const WELCOME_BONUS = 100;
 
-// --- All helper components remain the same --- //
 const initialNotificationState = { success: false, message: '' };
 function SubmitNotificationButton() {
   const { pending } = useFormStatus();
@@ -219,7 +218,10 @@ function WithdrawalArea() {
             await requestWithdrawal(userProfile.uid, amount);
             toast({ title: 'Solicitud Enviada', description: 'Tu solicitud de retiro ha sido enviada.'});
             setWithdrawalAmount('');
-        } catch (error: any) { toast({ variant: 'destructive', title: 'Error', description: error.message }); } finally { setLoading(false); }
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Ocurrió un error desconocido.';
+            toast({ variant: 'destructive', title: 'Error', description: message });
+        } finally { setLoading(false); }
     }
 
     return (

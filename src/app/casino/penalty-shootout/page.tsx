@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useEffect, useActionState } from 'react';
+import { useState, useRef, useEffect, useActionState, useCallback } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardTitle, CardHeader, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,10 @@ import { Alert, AlertTitle, AlertDescription as AlertDescriptionComponent } from
 
 type GameState = 'betting' | 'powering' | 'shooting' | 'finished';
 type ShotResult = 'goal' | 'save' | 'miss';
+
+interface FirebaseError extends Error {
+    code?: string;
+  }
 
 const goalZones = [
     { id: 1, name: 'Sup. Izq.', position: { top: '30%', left: '22%' } },
@@ -125,29 +129,8 @@ export default function PenaltyShootoutPage() {
         fetchAssets();
     }, []);
 
-    const startPowering = () => {
-        if (gameState !== 'betting') return;
-        setGameState('powering');
-        powerIntervalRef.current = setInterval(() => {
-            setShotPower(prev => Math.min(100, prev + 1.5));
-        }, 20);
-    };
 
-    const releasePower = () => {
-        if (powerIntervalRef.current) clearInterval(powerIntervalRef.current);
-        if (gameState !== 'powering') return;
-        handleShoot();
-    };
-
-    useEffect(() => {
-        if (shotPower >= 100 && gameState === 'powering') {
-            if (powerIntervalRef.current) clearInterval(powerIntervalRef.current);
-            handleShoot();
-        }
-    }, [shotPower, gameState]);
-
-
-    const handleShoot = async () => {
+    const handleShoot = useCallback(async () => {
         if (!user) {
             toast({ variant: 'destructive', title: 'Error', description: 'Debes iniciar sesión para apostar.' });
             setGameState('betting');
@@ -252,13 +235,34 @@ export default function PenaltyShootoutPage() {
                 }, 3000);
             }, 1000);
 
-        } catch (error: any) {
-            toast({ variant: 'destructive', title: 'Error al apostar', description: error.message });
+        } catch (error) {
+            const firebaseError = error as FirebaseError;
+            toast({ variant: 'destructive', title: 'Error al apostar', description: firebaseError.message });
             setGameState('betting');
             setShotPower(0);
         }
+    }, [user, selectedZone, selectedMultiplier, betAmount, shotPower, toast, gameAssets]);
+
+    const startPowering = () => {
+        if (gameState !== 'betting') return;
+        setGameState('powering');
+        powerIntervalRef.current = setInterval(() => {
+            setShotPower(prev => Math.min(100, prev + 1.5));
+        }, 20);
     };
 
+    const releasePower = () => {
+        if (powerIntervalRef.current) clearInterval(powerIntervalRef.current);
+        if (gameState !== 'powering') return;
+        handleShoot();
+    };
+
+    useEffect(() => {
+        if (shotPower >= 100 && gameState === 'powering') {
+            if (powerIntervalRef.current) clearInterval(powerIntervalRef.current);
+            handleShoot();
+        }
+    }, [shotPower, gameState, handleShoot]);
 
     const getBallStyle = () => {
         if (gameState === 'shooting' && selectedZone) {

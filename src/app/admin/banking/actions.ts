@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
 const SETTINGS_COLLECTION = 'site_settings';
@@ -34,8 +34,9 @@ export async function getBankingSettings(): Promise<BankingInfo> {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
-            const { lastUpdated, ...settings } = data;
-            return settings as BankingInfo;
+            // The 'lastUpdated' field is internal and should not be sent to the client.
+            delete data.lastUpdated;
+            return data as BankingInfo;
         }
         return {};
     } catch (error) {

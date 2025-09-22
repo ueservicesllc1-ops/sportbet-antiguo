@@ -149,7 +149,7 @@ export default function AdminWalletsPage() {
             if (results.length === 0) {
                  toast({ variant: 'default', title: 'Sin Resultados', description: 'No se encontraron usuarios con ese criterio de búsqueda.' });
             }
-        } catch (err) {
+        } catch {
             toast({ variant: 'destructive', title: 'Error', description: 'No se pudo realizar la búsqueda.' });
         } finally {
             setLoading(false);

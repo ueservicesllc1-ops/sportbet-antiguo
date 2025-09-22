@@ -8,16 +8,29 @@ import { createOrder, captureOrder } from '@/lib/paypal';
 import { Loader2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { cn } from '@/lib/utils';
-import { updateUserBalance } from '@/app/wallet/actions'; // <-- IMPORT THE ACTION
+import { updateUserBalance } from '@/app/wallet/actions';
 
 interface PaypalButtonProps {
   amount: number;
   onPaymentSuccess: () => void;
 }
 
+// Define specific types for the PayPal SDK to avoid using 'any'
+interface PayPalButtonsComponent {
+  render: (container: HTMLElement) => void;
+}
+
+interface PayPalSDK {
+  Buttons(options: {
+      createOrder: () => Promise<string>;
+      onApprove: (data: { orderID: string }) => Promise<void>;
+      onError: (err: unknown) => void;
+  }): PayPalButtonsComponent;
+}
+
 declare global {
   interface Window {
-    paypal?: object;
+    paypal?: PayPalSDK;
   }
 }
 
@@ -62,7 +75,7 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
             paypalButtonsRef.current.innerHTML = "";
 
             try {
-                (window.paypal as any).Buttons({
+                window.paypal.Buttons({
                     createOrder: async () => {
                         setError(null);
                         if (amount <= 0) {
@@ -72,10 +85,12 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                         }
                         try {
                             const order = await createOrder(amount);
-                            if (order.id) {
+                            if (order && order.id) {
                                 return order.id;
                             }
-                            const errorDetail = order.details?.[0] || { issue: 'UNKNOWN_ERROR', description: 'No se pudo crear la orden en el servidor.' };
+                            const errorDetail: { issue: string; description: string } = 
+                                (order && order.details && order.details[0]) || 
+                                { issue: 'UNKNOWN_ERROR', description: 'No se pudo crear la orden en el servidor.' };
                             throw new Error(errorDetail.description);
                         } catch (err: unknown) {
                              console.error("Create Order Error:", err);
@@ -96,8 +111,6 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                             const captureResult = await captureOrder(data.orderID, user.uid);
                             if (captureResult.success) {
                                 
-                                // --- THIS IS THE FIX --- 
-                                // After capturing the order, update the user's balance in Firestore
                                 const balanceUpdateResult = await updateUserBalance(user.uid, amount);
 
                                 if (balanceUpdateResult.success) {
@@ -106,9 +119,8 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                                         description: `Se han añadido $${amount.toFixed(2)} a tu saldo.`,
                                         className: 'bg-green-600 border-green-600 text-white'
                                     });
-                                    onPaymentSuccess(); // This will trigger UI updates like resetting the amount
+                                    onPaymentSuccess();
                                 } else {
-                                    // Handle cases where the balance update fails after payment
                                     throw new Error(balanceUpdateResult.message || 'El pago fue procesado, pero hubo un error al actualizar tu saldo.');
                                 }
 
@@ -117,7 +129,6 @@ export function PaypalButton({ amount, onPaymentSuccess }: PaypalButtonProps) {
                             }
                         } catch (err: unknown) {
                             console.error("OnApprove Error:", err);
-                            // This error message is more comprehensive for the user
                             const errMessage = err instanceof Error ? err.message : 'No se pudo completar el pago. Si los fondos fueron debitados, contacta a soporte.';
                             setError(errMessage);
                         } finally {
